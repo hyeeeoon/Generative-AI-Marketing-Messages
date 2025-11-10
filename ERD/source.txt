@@ -1,0 +1,154 @@
+// ==========================================
+// 📘 공통 테이블
+// ==========================================
+
+Table userInfo {
+  id long [primary key, increment, note: '사용자 고유 ID']
+  username varchar [note: '사용자 이름']
+  userId varchar [unique, not null, note: '로그인 ID']
+  password varchar [not null, note: '암호화 저장']
+  role varchar [note: 'admin 또는 ktcs_user 권한 구분']
+  organization varchar [note: '소속 기관명 (KT CS 등)']
+  createdAt timestamp
+}
+
+Table loginLogs {
+  id long [primary key, increment, note: '로그인 이력 고유 ID']
+  userId long [not null, note: 'userInfo.id 참조']
+  loginTime timestamp
+  success boolean [note: '로그인 성공 여부']
+  ipAddress varchar [note: '로그인 IP 주소']
+}
+
+// 관계 설정: 로그인 로그 → 사용자
+Ref: loginLogs.userId > userInfo.id
+
+
+// ==========================================
+// 📂 KT CS (고객사) 주요 테이블
+// ==========================================
+
+Table Customer {
+  id long [primary key, increment, note: '고객 고유 ID']
+  name varchar [note: '고객 이름']
+  age int [note: '나이']
+  gender varchar [note: '성별']
+  phone varchar [note: '연락처']
+  joinDate date [note: '가입일']
+  status varchar [note: '활성, 해지, 연체 등 상태']
+}
+
+Table Usage_History {
+  id long [primary key, increment, note: '이력 고유 ID']
+  customerId long [not null, note: 'Customer.id 참조']
+  month varchar [note: '이용월 (YYYY-MM 형식)']
+  dataUsage float [note: '데이터 사용량 (GB)']
+  paymentStatus varchar [note: '납부 완료, 미납, 연체 등']
+  cancellationDate date [note: '해지일 (해지 시만 기록)']
+}
+
+// 고객별 이용 이력 관계
+Ref: Usage_History.customerId > Customer.id
+
+
+Table Service {
+  id long [primary key, increment, note: '서비스 ID']
+  name varchar [note: '요금제 / 부가서비스명']
+  description text [note: '서비스 설명']
+  price decimal [note: '요금 (월 단위)']
+  isActive boolean [note: '현재 판매 여부']
+}
+
+Table Segment {
+  id long [primary key, increment, note: '세그먼트 고유 ID']
+  name varchar [note: '세그먼트명 (예: OTT 이용 20대)']
+  criteria text [note: '세그먼트 구성 기준 (SQL 혹은 조건식 형태)']
+  createdAt timestamp
+}
+
+Table Message {
+  id long [primary key, increment, note: '메시지 고유 ID']
+  segmentId long [not null, note: 'Segment.id 참조']
+  serviceId long [note: 'Service.id 참조']
+  generatedBy varchar [note: '사용된 AI 모델명 또는 버전']
+  content text [note: 'AI가 생성한 메시지 내용']
+  createdAt timestamp
+}
+
+// 메시지 ↔ 세그먼트 / 서비스 관계
+Ref: Message.segmentId > Segment.id
+Ref: Message.serviceId > Service.id
+
+
+Table Message_Log {
+  id long [primary key, increment, note: '메시지 로그 고유 ID']
+  messageId long [not null, note: 'Message.id 참조']
+  customerId long [not null, note: 'Customer.id 참조']
+  sentAt timestamp [note: '발송 시각']
+  isDelivered boolean [note: '성공적으로 발송되었는지 여부']
+  isClicked boolean [note: '클릭 / 반응 여부']
+}
+
+// 메시지 로그 관계
+Ref: Message_Log.messageId > Message.id
+Ref: Message_Log.customerId > Customer.id
+
+
+// ==========================================
+// 📂 AI 지침 관련 (핵심 구조)
+// ==========================================
+
+Table AI_Guideline_Admin {
+  id long [primary key, increment, note: '기본 AI 지침 고유 ID']
+  title varchar [note: '지침 제목 (예: 기본 금지어 세트 v1.0)']
+  tone text [note: '기본 톤 / 문체']
+  forbidden_words text [note: '금지어 목록 (JSON 배열 형태)']
+  description text [note: '지침 설명']
+  createdAt timestamp
+}
+
+Table AI_Guideline_Client {
+  id long [primary key, increment, note: '고객사 AI 지침 고유 ID']
+  clientId long [not null, note: 'userInfo.id 참조 (고객사 계정)']
+  baseGuidelineId long [note: 'AI_Guideline_Admin.id 참조 (기본 지침 참고용)']
+  added_tone text [note: '추가 톤 / 문체']
+  added_forbidden_words text [note: '추가 금지어 목록 (JSON 배열 형태)']
+  description text [note: '추가 지침 설명']
+  createdAt timestamp
+}
+
+// 관계: 고객사 지침은 기본 지침을 참고 + 사용자 계정 연결
+Ref: AI_Guideline_Client.baseGuidelineId > AI_Guideline_Admin.id
+Ref: AI_Guideline_Client.clientId > userInfo.id
+
+
+// ==========================================
+// 📂 관리자(운영자) 쪽 주요 테이블
+// ==========================================
+
+Table Model_Info {
+  id long [primary key, increment, note: '모델 관리 ID']
+  model_name varchar [note: '모델 이름 (예: GPT-4-turbo)']
+  version varchar [note: '버전 정보']
+  api_endpoint varchar [note: 'API 엔드포인트 주소']
+  description text [note: '모델 설명']
+  createdAt timestamp
+}
+
+Table Customer_Segment {
+  id long [primary key, increment, note: '매핑 ID']
+  customerId long [not null, note: 'Customer.id 참조']
+  segmentId long [not null, note: 'Segment.id 참조']
+}
+
+// 다대다 관계 매핑
+Ref: Customer_Segment.customerId > Customer.id
+Ref: Customer_Segment.segmentId > Segment.id
+
+
+Table System_Log {
+  id long [primary key, increment, note: '시스템 로그 ID']
+  log_type varchar [note: '정제, 오류, 모델실행 등 구분']
+  message text [note: '로그 내용']
+  createdAt timestamp
+}
