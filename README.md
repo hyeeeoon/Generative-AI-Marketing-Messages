@@ -31,5 +31,5 @@
 
 1. **저장소 클론**
    ```bash
-   git clone https://github.com/your-org/personalized-ai-messages.git
-   cd personalized-ai-messages
+   git clone https://github.com/hyeeeoon/Generative-AI-Marketing-Messages.git
+   cd Generative-AI-Marketing-Messages
