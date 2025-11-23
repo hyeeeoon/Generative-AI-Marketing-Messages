@@ -1,0 +1,103 @@
+/* components/header/Header.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.header-title {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* components/header/NotificationButton.css */
+.notification-button {
+    position: relative;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bell-icon {
+    width: 20px;
+    height: 20px;
+    background-color: gray; /* 종 아이콘 대신 임시 컬러 */
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.red-dot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: red;
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+}
+
+/* components/header/NotificationList.css */
+.notification-list {
+    position: absolute;
+    top: 56px;
+    right: 20px;
+    width: 280px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.unread-count {
+    color: red;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-indicator.read {
+    background-color: gray;
+}
+
+.status-indicator.unread {
+    background-color: red;
+}
+
+.notification-text {
+    flex-grow: 1;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: #888;
+}
