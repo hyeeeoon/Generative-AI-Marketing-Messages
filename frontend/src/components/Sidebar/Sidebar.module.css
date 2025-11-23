@@ -1,0 +1,164 @@
+/* Sidebar.module.css */
+
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: #fff;
+    border-right: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    z-index: 40;
+}
+
+.logoWrap {
+    height: 64px;
+    padding: 24px;
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuWrap {
+    flex: 1;
+    padding: 16px 0;
+    overflow-y: auto;
+}
+
+.menuSection {
+    margin-top: 18px;
+    margin-bottom: 10px;
+    padding-left: 16px;
+    color: #b5b8be;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.7px;
+}
+
+.menuBtn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    font-size: 15px;
+    color: #313133;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.menuBtn.selected {
+    background: #e60012;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(230,0,18,0.07);
+}
+
+.menuBtn:hover {
+    background: #f5f5f5;
+}
+
+.profileBlock {
+    padding: 16px;
+    border-top: 1px solid #f3f4f6;
+    background: #f9fafb;
+}
+
+.profileItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f3f4f6;
+    border-radius: 14px;
+    padding: 10px;
+}
+
+.profileIcon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #757575;
+    font-size: 17px;
+}
+
+.profileInfo {
+    flex: 1;
+    overflow: hidden;
+}
+
+.profileInfoTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profileName {
+    font-weight: bold;
+    color: #232323;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.profileRole {
+    font-size: 10px;
+    color: #888;
+}
+
+.infoBtn {
+    font-size: 10px;
+    color: #2563eb;
+    font-weight: bold;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.logoutBtn {
+    color: #b5b8be;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.logoutBtn:hover {
+    color: #e60012;
+}
+
+/* 커스텀 스크롤바 (옵션) */
+.menuWrap::-webkit-scrollbar {
+    width: 8px;
+    background: #f1f5f9;
+}
+
+.menuWrap::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+.menuWrap::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+.logoutIconBtn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 8px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.logoutImg {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: inline-block;
+}
