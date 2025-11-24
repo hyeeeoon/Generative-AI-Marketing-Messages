@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./Generator.css";
 
-// [translate:서버에서 고객 정보를 가져오고, 내부 데이터 구조로 변환하는 함수]
 async function fetchRecipients(userFilters, showRiskOnly) {
     try {
-        const res = await fetch("/api/target-customers");
-        if (!res.ok) {
-            throw new Error("Failed to fetch customer data");
-        }
+        const res = await fetch("http://localhost:5001/api/target-customers");
+        if (!res.ok) throw new Error("Failed to fetch customer data");
+
         const apiData = await res.json();
 
-        // [translate:API 데이터를 내부 사용 형식으로 매핑]
+        console.log("API에서 받은 데이터:", apiData);
+
         const data = apiData.map(item => {
             let period = "전체";
             if (item.Contract === "One year") period = "1년 이상";
@@ -19,31 +18,38 @@ async function fetchRecipients(userFilters, showRiskOnly) {
 
             const gender = item.gender === "Female" ? "여성" : "남성";
 
-            // [translate:위험군 여부를 months_left 기준으로 간단히 계산]
+            // 요금제는 PaymentMethod, MonthlyCharges, 인터넷 종류 등을 활용해 추론 가능하나 명확치 않아 "전체"로 처리
+            // 필요에 따라 plan 매핑 추가 가능
+            let plan = "전체";
+
+            // 위험군 판단: months_left가 1 이하일 때 true
             const risk = typeof item.months_left === "number" && item.months_left <= 1;
+
+            // 나이 정보가 없어서 전체로 둠 (나중에 나이 데이터 있을 경우 처리 필요)
+            const age = "전체";
 
             return {
                 id: item.customerID,
-                name: item.customerID,    // [translate:이름 정보가 없으므로 customerID 사용]
-                plan: "요금정보 없음",
-                price: "-",
-                age: "전체",
-                gender: gender,
-                period: period,
-                network: "전체",
-                risk: risk,
+                name: item.customerID,
+                plan,
+                price: item.MonthlyCharges,
+                age,
+                gender,
+                period,
+                network: item.InternetService, // 인터넷 종류 필드도 포함 가능
+                risk,
             };
         });
 
-        // [translate:사용자 필터에 따른 고객 필터링]
+        // 필터링
         let filtered = data.filter(user =>
             (userFilters.age === "전체" || user.age === userFilters.age) &&
             (userFilters.gender === "전체" || user.gender === userFilters.gender) &&
             (userFilters.period === "전체" || user.period === userFilters.period) &&
-            (userFilters.plan === "전체" || user.plan.includes(userFilters.plan))
+            (userFilters.plan === "전체" || user.plan === userFilters.plan)
         );
 
-        if (showRiskOnly) filtered = filtered.filter(user => user.risk === true);
+        if (showRiskOnly) filtered = filtered.filter(user => user.risk);
 
         return filtered;
     } catch (error) {
@@ -53,7 +59,6 @@ async function fetchRecipients(userFilters, showRiskOnly) {
 }
 
 function Generator() {
-    // [translate:메시지 생성 폼 상태]
     const [formFilters, setFormFilters] = useState({
         event: "수능 끝! Y틴 데이터 2배",
         purpose: "혜택 알림",
@@ -62,7 +67,6 @@ function Generator() {
         extra: "",
     });
 
-    // [translate:고객 필터 상태]
     const [userFilters, setUserFilters] = useState({
         age: "전체",
         gender: "전체",
@@ -70,48 +74,35 @@ function Generator() {
         plan: "전체",
     });
 
-    // [translate:고객 목록, 선택된 ID 배열, 메시지 객체, 편집 상태, 위험군 보기 상태]
     const [recipients, setRecipients] = useState([]);
     const [selectedIds, setSelectedIds] = useState([]);
     const [messages, setMessages] = useState({});
     const [editing, setEditing] = useState({});
     const [showRiskOnly, setShowRiskOnly] = useState(false);
 
-    // [translate:필터 또는 위험군 보기 토글 변경 시 고객 목록을 다시 불러오기]
     useEffect(() => {
         fetchRecipients(userFilters, showRiskOnly).then(setRecipients);
     }, [userFilters, showRiskOnly]);
 
-    const handleSelectAll = () => {
-        setSelectedIds(recipients.map(r => r.id));
-    };
-    const handleDeselectAll = () => {
-        setSelectedIds([]);
-    };
-
+    const handleSelectAll = () => setSelectedIds(recipients.map(r => r.id));
+    const handleDeselectAll = () => setSelectedIds([]);
     const handleFormFilterChange = (e) => {
         const { name, value } = e.target;
         setFormFilters(f => ({ ...f, [name]: value }));
     };
-
     const handleUserFilterChange = (e) => {
         const { name, value } = e.target;
         setUserFilters(f => ({ ...f, [name]: value }));
     };
-
     const handleSelect = (id) => {
         setSelectedIds(ids =>
-            ids.includes(id)
-                ? ids.filter(i => i !== id)
-                : [...ids, id]
+            ids.includes(id) ? ids.filter(i => i !== id) : [...ids, id]
         );
     };
-
     const handleToggleRisk = () => {
         setShowRiskOnly(risk => !risk);
         setSelectedIds([]);
     };
-
     const handleGenerate = () => {
         const msgObj = {};
         selectedIds.forEach(id => {
@@ -121,21 +112,15 @@ function Generator() {
         setMessages(msgObj);
         setEditing({});
     };
-
     const toggleEditing = id => {
         setEditing(prev => ({ ...prev, [id]: !prev[id] }));
     };
-
     const handleSendMessage = id => {
         alert(`메시지 전송: ${recipients.find(r => r.id === id)?.name}\n\n${messages[id]}`);
     };
-
     const handleSendAll = () => {
-        selectedIds.forEach(id => {
-            handleSendMessage(id);
-        });
+        selectedIds.forEach(id => handleSendMessage(id));
     };
-
     const handleMessageChange = (id, newMsg) => {
         setMessages(msgs => ({ ...msgs, [id]: newMsg }));
     };
@@ -204,7 +189,9 @@ function Generator() {
                         </select>
                         <button style={{ marginLeft: 8 }} onClick={handleSelectAll}>전체선택</button>
                         <button style={{ marginLeft: 8 }} onClick={handleDeselectAll}>전체해제</button>
-                        <button style={{ marginLeft: 8 }} onClick={handleToggleRisk}>{showRiskOnly ? "전체보기" : "위험군만 보기"}</button>
+                        <button style={{ marginLeft: 8 }} onClick={handleToggleRisk}>
+                            {showRiskOnly ? "전체보기" : "위험군만 보기"}
+                        </button>
                     </div>
                     <ul className="recipientList">
                         {recipients.map(r => (
