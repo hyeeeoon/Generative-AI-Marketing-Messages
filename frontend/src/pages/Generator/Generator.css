@@ -1,0 +1,170 @@
+.container {
+    padding: 24px;
+    background: #fff;
+}
+.topFilter {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.generateBtn {
+    background: #ff233c;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+.extraSection {
+    margin: 16px 0 10px 0;
+}
+.extraInput {
+    width: 400px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+.body {
+    display: flex;
+    min-height: 500px;
+}
+.sideFilter {
+    min-width: 260px;
+    margin-right: 24px;
+}
+.userFilter {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.recipientList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.recipientItem {
+    background: #f9f9f9;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    padding: 12px 8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 1.06em;
+    transition: border 0.15s;
+}
+.riskUser {
+    box-shadow: 0 0 0 2px #ff234c55;
+}
+.selectedUser {
+    border: 2px solid #ff233c;
+    background: #ffecee;
+}
+.name { font-weight: bold; margin-right: 8px; font-size:1.07em;}
+.plan { margin-right: 7px; color: #888; font-size: 0.97em; }
+.price, .age, .gender, .network, .period { margin-right: 7px; color: #888; font-size: 0.97em; }
+.risk { color: #ff233c; margin-left: 5px; font-size: 0.97em; font-weight: bold; }
+.messageArea {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    min-height: 320px;
+}
+.emptyMsg {
+    margin: 60px auto;
+    color: #999;
+    font-size: 1.18em;
+}
+.messageBox {
+    min-width: 340px;
+    max-width: 420px;
+    border: 2px solid #ff233c;
+    border-radius: 9px;
+    padding: 18px 12px 12px 16px;
+    background: #fff9fa;
+    margin-bottom: 18px;
+    box-shadow: 0 0 5px #ffe3eb33;
+    position: relative;
+}
+.msgMetaHeader {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    font-size: 1.09em;
+    margin-bottom: 9px;
+}
+.msgName { font-weight: bold; font-size:1.08em; }
+.msgTag { background: #eee; color: #555; font-size:0.93em; border-radius: 7px; padding: 3px 9px; margin-left:2px;}
+.msgTone { background: #ffedf7; color: #805cff; border-radius: 7px; padding: 3px 7px; font-size: 0.93em; margin-left:3px;}
+.msgBoxContent {
+    background: #fff;
+    padding: 6px 5px 6px 2px;
+}
+.msgActions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+.msgEditBtn, .msgSendBtn {
+    padding: 5px 16px;
+    border-radius: 6px;
+    border: none;
+    background: #eee;
+    font-weight: bold;
+    cursor: pointer;
+}
+.msgSendBtn { background: #ff233c; color: #fff; }
+.messageInput {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    border-radius: 4px;
+    border: 1px solid #ccd;
+    padding: 10px;
+    font-size: 1em;
+    background: #fff;
+    margin-top: 5px;
+}
+
+.topFilter.largeFilter {
+    padding: 24px 16px;
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    background: #fafafb;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 18px #f2e2ee33;
+}
+
+.filterSelect {
+    font-size: 1.15em;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    background: #fff;
+    min-width: 175px;
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+.bigBtn {
+    font-size: 1.16em;
+    padding: 13px 28px;
+    border-radius: 9px;
+    border: none;
+    background: #ff233c;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 1px 4px #ff233c22;
+    transition: background 0.18s;
+    cursor: pointer;
+}
+.bigBtn:hover {
+    background: #ee112a;
+}

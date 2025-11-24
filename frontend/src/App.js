@@ -4,7 +4,7 @@ import { useState } from 'react';
 import LoginPage from './pages/Auth/LoginPage';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
-import Generator from './pages/Generator';
+import Generator from './pages/Generator/Generator';
 import History from './pages/History';
 import Performance from './pages/Performance';
 import Manager from './pages/Manager';
