@@ -1,0 +1,109 @@
+/* 안쪽 로그인 폼 영역: 오른쪽 카드 내부 폭만 제어 */
+.kt-right {
+  margin-top: 50px;   /* 아래 여백 10px */
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 오른쪽 - 상단 */
+.kt-back-btn {
+  align-self: flex-start;
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.kt-back-btn:hover {
+  color: #6b7280;
+}
+
+.kt-user-info {
+  margin-bottom: 28px;
+}
+
+.kt-user-name {
+  font-size: 22px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.kt-user-role {
+  font-size: 13px;
+  color: #ef4444;
+}
+
+/* 폼 */
+.kt-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.kt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kt-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.kt-input {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  padding: 0 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kt-input::placeholder {
+  color: #d1d5db;
+}
+
+.kt-input:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.35);
+}
+
+/* 로그인 버튼 */
+.kt-login-btn {
+  margin-top: 8px;
+  height: 46px;
+  border-radius: 10px;
+  border: none;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 5px rgba(248, 113, 113, 0.5);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+}
+
+.kt-login-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 1px 5px rgba(248, 113, 113, 0.6);
+}
+
+.kt-login-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 5px rgba(248, 113, 113, 0.45);
+}
+
+/* 하단 텍스트 */
+.kt-helper-text {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}

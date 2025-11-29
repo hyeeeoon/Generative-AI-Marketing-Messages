@@ -1,0 +1,86 @@
+// src/pages/Auth/LoginView.jsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "./Login.module.css";
+import KT_LOGO from "../../assets/kt_logo.png";
+import LoginPage from "./LoginPage";
+import LoginForm from "./LoginForm";
+import SignupPage from "./SignupPage";
+
+function LoginView({ setUser }) {
+  const [step, setStep] = useState("select");   // "select" | "login" | "signup"
+  const [selectedRole, setSelectedRole] = useState(null);
+  const navigate = useNavigate();
+
+  const handleRoleSelect = (role) => {
+    setSelectedRole(role);
+    setStep("login");          // 선택 후 로그인 폼으로
+  };
+
+  const handleGoSignup = () => {
+    setSelectedRole(null);
+    setStep("signup");
+  };
+
+  const handleBack = () => {
+    // 회원가입/로그인 폼 둘 다 뒤로가기 → 권한 선택으로
+    setStep("select");
+  };
+
+  const handleLoginSuccess = (userInfo) => {
+    setUser({ name: userInfo.name, role: selectedRole });
+    navigate("/home");
+  };
+
+  const handleSignupSuccess = (userInfo) => {
+    alert("회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.");
+    setStep("login");
+    // 필요하면 여기서 기본 값 세팅도 가능
+  };
+
+  return (
+    <div className={styles.loginLayout}>
+      {/* 왼쪽 공통 UI */}
+      <div className={styles.loginLeft}>
+        <img src={KT_LOGO} alt="KT Logo" className={styles.loginLogo} />
+        <h1 className={styles.loginTitle}>TalkOnz</h1>
+        <p className={styles.loginDesc}>
+          고객과 마음을 잇는<br />스마트한 시작.
+        </p>
+        <div className={styles.loginStatus}>
+          <span className={styles.statusDot} /> System Online
+        </div>
+      </div>
+
+      {/* 오른쪽: 단계별로 다른 컴포넌트 렌더 */}
+      <div className={styles.loginRight}>
+        {step === "select" && (
+          <LoginPage onSelect={handleRoleSelect} onGoSignup={handleGoSignup} />
+        )}
+
+        {step === "login" && (
+          <LoginForm
+            role={selectedRole}
+            onBack={handleBack}
+            onLoginSuccess={handleLoginSuccess}
+          />
+        )}
+
+        {step === "signup" && (
+          <SignupPage
+            onBack={handleBack}
+            onSignupSuccess={handleSignupSuccess}
+          />
+        )}
+
+        <footer className={styles.loginFooterWrapper}>
+          <p className={styles.loginFooter}>
+            © 2025 KT CS Corp. Secure Access.
+          </p>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+export default LoginView;

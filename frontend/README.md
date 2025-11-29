@@ -1,73 +1,20 @@
-# Getting Started with Create React App
+# React + Vite
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Available Scripts
+Currently, two official plugins are available:
 
-In the project directory, you can run:
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-### `npm start`
+## React Compiler
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Expanding the ESLint configuration
 
-### `npm test`
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 src/                                   # 리액트 소스 코드 루트
 ├── components/                        # 공통 UI 컴포넌트 폴더 (여러 페이지에서 재사용)
@@ -94,9 +41,16 @@ src/                                   # 리액트 소스 코드 루트
 │   │   ├── Input.js                   # 재사용 입력폼 컴포넌트
 │   │   └── index.js                   # Common export
 ├── pages/                             # 실제 화면 단위, 라우터 연결 기준
-│   ├── Auth/                          # 로그인/회원가입/권한 관리 관련 페이지
-│   │   ├── LoginPage.js               # 로그인 화면
-│   │   └── LogoutPage.js              # 로그아웃 화면/기능
+│   └── Auth/                          # 로그인/회원가입/권한 관리 관련 페이지
+│   │   ├── LoginView.jsx              # 로그인 레이아웃 + 단계 전환 (실제로 보이는 전체 로그인 화면)
+│   │   ├── LoginPage.jsx              # 로그인 권한 선택 화면 (역할 선택 페이지)
+│   │   ├── LoginForm.jsx              # 실제 로그인 폼 (아이디/비번 입력)
+│   │   ├── LogoutPage.jsx             # 로그아웃 화면/기능
+│   │   │── SignupPage.jsx             # 회원가입 화면/기능
+│   │   ├── Login.module.css           # 레이아웃 + 페이지 공통 스타일  # (LoginView, LoginPage 에서 사용)
+│   │   ├── SignupPage.css             # 회원가입 전용 스타일         # (SignupPage 디자인)
+│   │   └── LoginForm.css              # 로그인 폼 전용 스타일        # (LoginForm 디자인)
+│   │                                
 │   ├── Dashboard/                     # 데이터 요약, 시각화 대시보드
 │   │   └── DashboardPage.js           # 대시보드 메인페이지
 │   ├── Customers/                     # 고객 CRUD + 상세 정보, 히스토리
