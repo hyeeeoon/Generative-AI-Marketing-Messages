@@ -1,0 +1,118 @@
+  /* 오른쪽 회원가입 영역: LoginRight 내부 컨텐츠 폭 제어 */
+  .kt-signup-right {
+    width: 100%;
+    max-width: 560px;            /* 전체 오른쪽 폭 */
+    display: flex;
+    flex-direction: column;
+    padding: 40px 56px 32px 56px; /* 바깥 여백 추가 (위, 좌우, 아래) */
+    box-sizing: border-box;
+    overflow-y: auto;   /* 내용 넘칠 때 오른쪽 영역 안에서만 세로 스크롤 */
+  }
+
+  /* 뒤로가기 버튼 (기존과 동일 가능) */
+  .kt-back-btn {
+    align-self: flex-start;
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 24px;
+  }
+
+  .kt-back-btn:hover {
+    color: #6b7280;
+  }
+
+  /* 상단 타이틀 영역 */
+  .kt-user-info {
+    margin-bottom: 32px;
+  }
+
+  .kt-user-name {
+    font-size: 26px;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  .kt-user-role {
+    font-size: 14px;
+    color: #ef4444;
+  }
+
+  /* 폼 전체: 안쪽 필드 폭 한 번 더 제한 */
+  .kt-signup-form {
+    width: 100%;
+    max-width: 720px;            /* 인풋이 화면 꽉 안 차게 */
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  /* 공통 필드 */
+  .kt-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .kt-label {
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  /* 이미지처럼 좌우로 넓고 얇은 인풋 */
+  .kt-input {
+    height: 52px;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+    padding: 0 20px;
+    font-size: 14px;
+    outline: none;
+    background-color: #f9fafb;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+
+  .kt-input::placeholder {
+    color: #cbd5e1;
+  }
+
+  .kt-input:focus {
+    border-color: #f97373;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.25);
+  }
+
+  /* 하단 긴 버튼 (이미지처럼 양쪽 거의 꽉 차게) */
+  .kt-signup-btn {
+    margin-top: 24px;
+    height: 56px;
+    border-radius: 999px;
+    border: none;
+    background: #f0473e;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 14px 32px rgba(240, 71, 62, 0.45);
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+  }
+
+  .kt-signup-btn:hover {
+    background: #e53b35;
+    transform: translateY(-1px);
+    box-shadow: 0 18px 36px rgba(240, 71, 62, 0.55);
+  }
+
+  .kt-signup-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 12px 28px rgba(240, 71, 62, 0.4);
+  }
+
+  /* 하단 안내 텍스트 */
+  .kt-helper-text {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 16px;
+  }
