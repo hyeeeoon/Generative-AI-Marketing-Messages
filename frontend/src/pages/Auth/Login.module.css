@@ -1,118 +1,176 @@
-/* src/pages/Auth/Login.module.css */
-.loginLayout {
-    display: flex;
-    min-height: 540px;
-    border-radius: 24px;
-    box-shadow: 0 4px 32px rgba(0,0,0,0.08);
-    background: #fff;
-    overflow: hidden;
-    margin: 36px auto;
-    max-width: 900px;
-}
-.loginLeft {
-    background: #fff;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid #f3f4f6;
-    padding: 56px 0 52px 0;
-    text-align: center;
-}
-.loginLogo {
-    height: 48px;
-    margin-bottom: 22px;
-}
-.loginTitle {
-    font-size: 2.1rem;
-    font-weight: 700;
-    color: #222;
-    margin-bottom: 10px;
-    letter-spacing: -2px;
-}
-.loginDesc {
-    color: #444;
-    font-size: 1.12rem;
-    opacity: 0.88;
-    margin-bottom: 22px;
-}
-.loginStatus {
-    margin: 18px auto 0 auto;
-    color: #26b25f;
-    font-size: 1rem;
-    padding: 4px 16px;
-    border-radius: 12px;
-    background: #eafbec;
-    display: inline-flex;
-    align-items: center;
-    font-weight: 600;
-}
-.statusDot {
-    width: 8px; height: 8px; background: #26b25f; border-radius: 50%;
-    margin-right: 9px; display: inline-block;
-}
-.loginRight {
-    flex: 1.3;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 56px 0;
-}
-.loginSelectTitle {
-    font-size: 1.35rem;
-    color: #222;
-    font-weight: 700;
-    margin-bottom: 28px;
-}
-.roleSelectList {
-    width: 100%;
-    max-width: 400px;
-}
-.roleSelectCard {
-    width: 100%;
-    padding: 22px 32px;
-    background: #fafbfc;
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 1px 5px rgba(80,80,80,0.06);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    cursor: pointer;
-    transition: box-shadow 0.15s;
-    font-size: 1rem;
-}
-.roleSelectCard:hover {
-    box-shadow: 0 4px 18px rgba(56,202,124,0.14);
-    background: #f4f8ff;
-}
-.roleIcon {
-    font-size: 1.85rem;
-    color: #555;
-    margin-right: 26px;
-}
-.roleTitle {
-    color: #192550;
-    font-weight: 700;
-    font-size: 1.06rem;
-    margin-bottom: 2px;
-}
-.roleDesc {
-    color: #888;
-    font-size: 0.98rem;
-}
-.roleArrow {
-    margin-left: 14px;
-    font-size: 1.6rem;
-    color: #bbb;
-}
-.loginFooter {
-    opacity: 0.65;
-    margin-top: 42px;
-    font-size: 0.927rem;
-    letter-spacing: -1px;
-}
+    /* 전체 로그인 카드 레이아웃 컨테이너 */
+    .loginLayout {
+        display: flex;                     /* 좌/우 2열 배치 */
+        height: 640px;                     /* 카드 전체 높이 고정 */
+        border-radius: 24px;               /* 둥근 모서리 */
+        box-shadow: 0 4px 32px rgba(0,0,0,0.08); /* 외곽 그림자 */
+        background: #fff;                  /* 카드 배경색 */
+        overflow: hidden;                  /* 모서리 밖 내용 잘라내기 */
+        margin: 36px auto;                 /* 위아래 여백 + 가운데 정렬 */
+        max-width: 1000px;                  /* 카드 최대 가로 폭 */
+    }
+    
+    /* 왼쪽 영역: 로고 / 문구 / 상태 */
+    .loginLeft {
+        background: #fff;
+        flex: 1;                           /* 오른쪽 대비 비율 1 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;           /* 세로 중앙 정렬 */
+        border-right: 1px solid #f3f4f6;   /* 가운데 구분선 */
+        padding: 56px 0 52px 0;
+        text-align: center;
+    }
+    
+    /* KT 로고 이미지 */
+    .loginLogo {
+        height: 48px;
+        margin-bottom: 22px;
+    }
+    
+    /* 서비스 이름 “TalkOnz” */
+    .loginTitle {
+        font-size: 2.1rem;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 10px;
+        letter-spacing: -2px;              /* 자간 조금 좁게 */
+    }
+    
+    /* “고객과 마음을 잇는 스마트한 시작” 문구 */
+    .loginDesc {
+        color: #444;
+        font-size: 1.12rem;
+        opacity: 0.88;
+        margin-bottom: 22px;
+    }
+    
+    /* System Online 배지 */
+    .loginStatus {
+        margin: 18px auto 0 auto;
+        color: #26b25f;
+        font-size: 1rem;
+        padding: 4px 16px;
+        border-radius: 12px;
+        background: #eafbec;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 600;
+    }
+    
+    /* 초록 동그라미 아이콘 */
+    .statusDot {
+        width: 8px;
+        height: 8px;
+        background: #26b25f;
+        border-radius: 50%;
+        margin-right: 9px;
+        display: inline-block;
+    }
+    
+    /* 오른쪽 영역: 권한 선택 또는 로그인 폼 */
+    .loginRight {
+        flex: 1.3;                         /* 왼쪽보다 약간 넓게 */
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;           /* 세로 중앙 정렬 (왼쪽과 동일) */
+        align-items: center;
+        padding: 56px 0;
+        box-sizing: border-box;
+    }
+    /* 내용 래퍼: 권한 선택 or 폼을 감싸는 영역 */
+    .loginContent {
+        flex: 1;                  /* 남는 높이를 전부 차지해서 footer를 아래로 밀어냄 */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;  /* 여기서 가운데 정렬 유지 */
+        align-items: center;
+    }
+    
+    /* 권한 선택 제목 “로그인 권한 선택” */
+    .loginSelectTitle {
+        font-size: 1.35rem;
+        color: #222;
+        font-weight: 700;
+        margin-bottom: 28px;
+    }
+    
+    /* 권한 카드 리스트 래퍼 */
+    .roleSelectList {
+        width: 100%;
+        max-width: 400px;                  /* 카드 묶음 최대 폭 */
+    }
+    
+    /* 개별 권한 카드 버튼 */
+    .roleSelectCard {
+        width: 100%;
+        padding: 22px 32px;
+        background: #fafbfc;
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 1px 5px rgba(80,80,80,0.06);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        cursor: pointer;
+        transition: box-shadow 0.15s;
+        font-size: 1rem;
+    }
+    
+    /* 카드 hover 효과 */
+    .roleSelectCard:hover {
+        box-shadow: 0 4px 18px rgba(56,202,124,0.14);
+        background: #f4f8ff;
+    }
+    
+    /* 아이콘 영역 (Font Awesome) */
+    .roleIcon {
+        font-size: 1.85rem;
+        color: #555;
+        margin-right: 26px;
+    }
+    
+    /* 역할 타이틀 텍스트 */
+    .roleTitle {
+        color: #192550;
+        font-weight: 700;
+        font-size: 1.06rem;
+        margin-bottom: 2px;
+    }
+    
+    /* 역할 설명 텍스트 */
+    .roleDesc {
+        color: #888;
+        font-size: 0.98rem;
+    }
+        
+    /* 오른쪽 화살표 문자 “>” */
+    .roleArrow {
+        margin-left: 14px;
+        font-size: 1.6rem;
+        color: #bbb;
+    }
+  
+    /* footer 래퍼 */
+    .loginFooterWrapper {
+        margin-top: auto;         /* flex에서 아래로 붙이기 */
+    }
+    
+    .loginFooter {
+        opacity: 0.65;
+        font-size: 0.927rem;
+        letter-spacing: -1px;
+    }
+    .signupLinkButton {
+        margin-top: 24px;
+        font-size: 0.9rem;
+        color: #6b7280;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      
