@@ -1,10 +1,12 @@
 // App.jsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
-import LoginPage from './pages/Auth/LoginPage';
+//import LoginPage from './pages/Auth/LoginPage';
+import LoginView from './pages/Auth/LoginView';
+import LoginForm from './pages/Auth/LoginForm';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
-import Generator from './pages/Generator';
+import Generator from './pages/Generator/Generator';
 import History from './pages/History';
 import Performance from './pages/Performance';
 import Manager from './pages/Manager';
@@ -14,7 +16,8 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/login" element={<LoginPage setUser={setUser} />} />
+                <Route path="/login" element={<LoginView setUser={setUser} />} />
+                <Route path="/loginform" element={<LoginForm />} />
                 <Route path="/" element={<Layout user={user} setUser={setUser} />}>
                     <Route index element={<Navigate to="/home" replace />} />
                     <Route path="home" element={<HomePage />} />
