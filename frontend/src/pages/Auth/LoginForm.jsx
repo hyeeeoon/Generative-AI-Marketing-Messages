@@ -6,9 +6,39 @@ function LoginForm({ role, onBack, onLoginSuccess }) {
   const [employeeId, setEmployeeId] = useState("2024001");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onLoginSuccess({ name: "김상담", employeeId });
+  
+    try {
+      const response = await fetch("http://localhost:8080/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: employeeId,      // 지금은 사번을 이메일 칸처럼 사용
+          password: password,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok || !data.isSuccess) {
+        alert(data.message || "로그인 실패");
+        return;
+      }
+  
+      // 백엔드 result 안에 유저 정보 있다고 가정 (id, email, name)
+      const user = data.result;
+  
+      onLoginSuccess({
+        name: user.name,
+        employeeId: employeeId,
+      });
+    } catch (error) {
+      console.error(error);
+      alert("로그인 요청 중 오류가 발생했습니다.");
+    }
   };
 
   return (
