@@ -1,14 +1,58 @@
-// src/pages/Auth/LoginForm.jsx
 import React, { useState } from "react";
 import "./LoginForm.css";
 
 function LoginForm({ role, onBack, onLoginSuccess }) {
-  const [employeeId, setEmployeeId] = useState("2024001");
+  const [userId, setUserId] = useState("2025");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  // 한글 역할명 → 코드 매핑 (회원가입과 동일 룰)
+  const mapRoleToCode = (roleLabel) => {
+    switch (roleLabel) {
+      case "관리자":
+        return "admin";
+      case "포털 관리자":
+        return "portal_admin";
+      case "일반 사용자":
+      default:
+        return "ktcs_user";
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onLoginSuccess({ name: "김상담", employeeId });
+
+    const roleCode = mapRoleToCode(role);
+
+    try {
+      const response = await fetch("http://localhost:8080/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId,
+          password: password,
+          role: roleCode,          // ★ 로그인 시 선택 역할도 같이 전송
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        alert(data.message || "로그인 실패");
+        return;
+      }
+
+      const user = data.result;
+
+      onLoginSuccess({
+        name: user.username,
+        employeeId: user.userId,
+      });
+    } catch (error) {
+      console.error(error);
+      alert("로그인 요청 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -30,8 +74,8 @@ function LoginForm({ role, onBack, onLoginSuccess }) {
           <input
             className="kt-input"
             type="text"
-            value={employeeId}
-            onChange={(e) => setEmployeeId(e.target.value)}
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
           />
         </div>
 

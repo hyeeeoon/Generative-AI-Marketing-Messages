@@ -9,16 +9,30 @@ import SignupPage from "./SignupPage";
 
 function LoginView({ setUser }) {
   const [step, setStep] = useState("select");   // "select" | "login" | "signup"
-  const [selectedRole, setSelectedRole] = useState(null);
+  const [selectedRole, setSelectedRole] = useState(null); // "일반 사용자" | "관리자" | "포털 관리자"
   const navigate = useNavigate();
 
+  // 한글 역할명 → 백엔드 코드
+  const mapRoleToCode = (roleLabel) => {
+    switch (roleLabel) {
+      case "관리자":
+        return "admin";
+      case "포털 관리자":
+        return "portal_admin";
+      case "일반 사용자":
+      default:
+        return "ktcs_user";
+    }
+  };
+
   const handleRoleSelect = (role) => {
+    // role: "일반 사용자" | "관리자" | "포털 관리자"
     setSelectedRole(role);
     setStep("login");          // 선택 후 로그인 폼으로
   };
 
   const handleGoSignup = () => {
-    setSelectedRole(null);
+    // 현재 선택된 역할 유지한 채 회원가입으로 이동 (일반 사용자, 관리자 등)
     setStep("signup");
   };
 
@@ -28,14 +42,18 @@ function LoginView({ setUser }) {
   };
 
   const handleLoginSuccess = (userInfo) => {
-    setUser({ name: userInfo.name, role: selectedRole });
+    console.log("LOGIN SUCCESS IN VIEW >>>", userInfo);
+    setUser({
+      name: userInfo.name,
+      role: selectedRole,                // 화면에서 쓸 표시용(한글)
+      roleCode: mapRoleToCode(selectedRole), // 필요하면 코드도 저장
+    });
     navigate("/home");
   };
 
   const handleSignupSuccess = (userInfo) => {
     alert("회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.");
     setStep("login");
-    // 필요하면 여기서 기본 값 세팅도 가능
   };
 
   return (
@@ -55,12 +73,15 @@ function LoginView({ setUser }) {
       {/* 오른쪽: 단계별로 다른 컴포넌트 렌더 */}
       <div className={styles.loginRight}>
         {step === "select" && (
-          <LoginPage onSelect={handleRoleSelect} onGoSignup={handleGoSignup} />
+          <LoginPage
+            onSelect={handleRoleSelect}
+            onGoSignup={handleGoSignup}
+          />
         )}
 
         {step === "login" && (
           <LoginForm
-            role={selectedRole}
+            role={selectedRole}                // 한글 역할명
             onBack={handleBack}
             onLoginSuccess={handleLoginSuccess}
           />
@@ -68,6 +89,8 @@ function LoginView({ setUser }) {
 
         {step === "signup" && (
           <SignupPage
+            role={selectedRole}                // ★ 선택한 역할 전달
+            roleCode={mapRoleToCode(selectedRole)} // ★ 백엔드용 코드도 전달
             onBack={handleBack}
             onSignupSuccess={handleSignupSuccess}
           />
