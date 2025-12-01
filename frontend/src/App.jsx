@@ -1,9 +1,7 @@
 // App.jsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
-//import LoginPage from './pages/Auth/LoginPage';
 import LoginView from './pages/Auth/LoginView';
-import LoginForm from './pages/Auth/LoginForm';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import Generator from './pages/Generator/Generator';
@@ -12,23 +10,24 @@ import Performance from './pages/Performance';
 import Manager from './pages/Manager';
 
 function App() {
-    const [user, setUser] = useState(null);
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<LoginView setUser={setUser} />} />
-                <Route path="/loginform" element={<LoginForm />} />
-                <Route path="/" element={<Layout user={user} setUser={setUser} />}>
-                    <Route index element={<Navigate to="/home" replace />} />
-                    <Route path="home" element={<HomePage />} />
-                    <Route path="generator" element={<Generator />} />
-                    <Route path="history" element={<History />} />
-                    <Route path="my_performance" element={<Performance />} />
-                    <Route path="manager_dashboard" element={<Manager />} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
-    );
+  const [user, setUser] = useState(null);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginView setUser={setUser} />} />
+
+        <Route path="/" element={<Layout user={user} setUser={setUser} />}>
+          <Route index element={<Navigate to="/home" replace />} />
+          <Route path="home" element={<HomePage />} />
+          <Route path="generator" element={<Generator />} />
+          <Route path="history" element={<History />} />
+          <Route path="my_performance" element={<Performance />} />
+          <Route path="manager_dashboard" element={<Manager />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
