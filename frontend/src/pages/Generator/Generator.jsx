@@ -10,7 +10,7 @@ async function fetchRecipients(userFilters, showRiskOnly) {
 
         console.log("API에서 받은 데이터:", apiData);
 
-        const data = apiData.map(item => {
+        const data = (apiData.data || []).map(item => {
             let period = "전체";
             if (item.Contract === "One year") period = "1년 이상";
             else if (item.Contract === "Month-to-month") period = "1개월";
