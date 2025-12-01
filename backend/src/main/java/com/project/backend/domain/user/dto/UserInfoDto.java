@@ -14,7 +14,7 @@ public class UserInfoDto {
         private Long id;
         private String userId;
         private String username;
-        private String role;
+        private String role;          // "ktcs_user" / "admin" / "portal_admin" 등
 
         public static Response from(UserInfo userInfo) {
             return Response.builder()
