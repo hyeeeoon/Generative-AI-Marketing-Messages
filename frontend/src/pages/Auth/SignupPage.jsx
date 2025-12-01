@@ -2,13 +2,23 @@
 import React, { useState } from "react";
 import "./SignupPage.css";
 
-function SignupForm({ onBack, onSignupSuccess }) {
+function SignupPage({ onBack, onSignupSuccess }) {
   const [name, setName] = useState("");
-  const [employeeId, setEmployeeId] = useState("");      // 아이디(사번 or 이메일)
+  const [employeeId, setEmployeeId] = useState(""); // = userId
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [roleCodeInput, setRoleCodeInput] = useState(""); // 사용자가 입력하는 코드 (AAAA, BBBB 등)
 
-  const handleSubmit = (e) => {
+  // 코드 → 백엔드 role 값 매핑
+  const mapCodeToRole = (code) => {
+    const trimmed = code.trim().toUpperCase();
+
+    if (trimmed === "AAAA") return "admin";          // 관리자
+    if (trimmed === "BBBB") return "portal_admin";   // 포털 관리자
+    return "ktcs_user";                              // 기본: 일반 사용자
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== passwordCheck) {
@@ -16,8 +26,44 @@ function SignupForm({ onBack, onSignupSuccess }) {
       return;
     }
 
-    // TODO: 실제 회원가입 API 연동
-    onSignupSuccess?.({ name, employeeId });
+    const roleCode = mapCodeToRole(roleCodeInput);
+
+    const signupBody = {
+      username: name,
+      userId: employeeId,
+      password: password,
+      role: roleCode,          // ★ 여기로 최종 role 저장
+      organization: "KT CS",
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/api/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signupBody),
+      });
+
+      const data = await response.json();
+      console.log("SIGNUP RESPONSE >>>", data);
+
+      if (!response.ok || !data.success) {
+        alert(data.message || "회원가입 실패");
+        return;
+      }
+
+      const user = data.result;
+
+      onSignupSuccess?.({
+        name: user.username,
+        employeeId: user.userId,
+        role: roleCode,
+      });
+    } catch (err) {
+      console.error(err);
+      alert("회원가입 요청 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -80,16 +126,27 @@ function SignupForm({ onBack, onSignupSuccess }) {
           />
         </div>
 
+        <div className="kt-field">
+          <label className="kt-label">권한 코드 (선택)</label>
+          <input
+            className="kt-input"
+            type="text"
+            placeholder="일반: 비워둠, 관리자: AAAA, 포털관리자: BBBB"
+            value={roleCodeInput}
+            onChange={(e) => setRoleCodeInput(e.target.value)}
+          />
+        </div>
+
         <button type="submit" className="kt-signup-btn">
           회원가입
         </button>
       </form>
 
       <div className="kt-helper-text">
-        이미 계정이 있으신가요? 로그인 화면으로 돌아가세요.
+        권한 코드 미입력 시 일반 사용자로 가입됩니다.
       </div>
     </div>
   );
 }
 
-export default SignupForm;
+export default SignupPage;

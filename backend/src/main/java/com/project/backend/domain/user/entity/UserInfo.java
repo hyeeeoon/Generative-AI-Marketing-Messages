@@ -27,7 +27,7 @@ public class UserInfo {
     private String password;
 
     @Column(name = "role")
-    private String role;  // admin 또는 ktcs_user
+    private String role;    // "ktcs_user" / "admin" / "portal_admin" 
 
     @Column(name = "organization")
     private String organization;

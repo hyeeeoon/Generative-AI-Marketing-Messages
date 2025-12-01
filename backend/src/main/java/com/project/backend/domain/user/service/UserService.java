@@ -34,15 +34,24 @@ public class UserService {
     }
 
     public UserInfoDto.Response login(LoginRequestDto request) {
-        UserInfo userInfo = userInfoRepository.findByUserId(request.getUserId()) 
-                .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
 
-        if (!passwordEncoder.matches(request.getPassword(), userInfo.getPassword())) {
+        UserInfo user = userInfoRepository.findByUserId(request.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        return UserInfoDto.Response.from(userInfo);
+        // 역할 검증: DB에 저장된 역할 vs 로그인 시 선택한 역할
+        if (request.getRole() != null && !request.getRole().isBlank()) {
+            if (!request.getRole().equals(user.getRole())) {
+                throw new IllegalArgumentException("선택한 권한으로는 로그인할 수 없습니다.");
+            }
+        }
+
+        return UserInfoDto.Response.from(user);
     }
+
 
     public UserInfoDto.Response getUser(Long id) { 
         UserInfo userInfo = userInfoRepository.findById(id)
