@@ -3,8 +3,8 @@ package com.project.backend.domain.user.controller;
 import com.project.backend.global.common.ApiResponse;
 import com.project.backend.domain.user.dto.LoginRequestDto;
 import com.project.backend.domain.user.dto.SignupRequestDto;
-import com.project.backend.domain.user.dto.UserDto;
-import com.project.backend.domain.user.service.UserService;
+import com.project.backend.domain.user.dto.UserInfoDto; 
+import com.project.backend.domain.user.service.UserService;  
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,29 +14,29 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UserService userService;  
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<UserDto.Response>> signup(@RequestBody SignupRequestDto request) {
-        UserDto.Response response = userService.signup(request);
+    public ResponseEntity<ApiResponse<UserInfoDto.Response>> signup(@RequestBody SignupRequestDto request) {
+        UserInfoDto.Response response = userService.signup(request); 
         return ResponseEntity.ok(
                 ApiResponse.success("회원가입 완료", response)
         );
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<UserDto.Response>> login(@RequestBody LoginRequestDto request) {
-        UserDto.Response response = userService.login(request);
+    public ResponseEntity<ApiResponse<UserInfoDto.Response>> login(@RequestBody LoginRequestDto request) {
+        UserInfoDto.Response response = userService.login(request); 
         return ResponseEntity.ok(
-                ApiResponse.success("로그인 완료", response)
+                ApiResponse.success("로그인 성공", response)
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserDto.Response>> getUser(@PathVariable Long id) {
-        UserDto.Response response = userService.getUser(id);
+    public ResponseEntity<ApiResponse<UserInfoDto.Response>> getUser(@PathVariable Long id) {
+        UserInfoDto.Response response = userService.getUser(id);
         return ResponseEntity.ok(
-            ApiResponse.success("유저 조회 완료", response)
+                ApiResponse.success("유저 조회 완료", response)
         );
     }
 

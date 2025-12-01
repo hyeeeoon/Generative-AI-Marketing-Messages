@@ -1,6 +1,6 @@
 package com.project.backend.domain.user.dto;
 
-import com.project.backend.domain.user.entity.User;
+import com.project.backend.domain.user.entity.UserInfo;
 import lombok.*;
 
 @Getter
@@ -9,15 +9,16 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class SignupRequestDto {
-    private String email;
+    private String userId; 
     private String password;
-    private String name;
+    private String username; 
 
-    public User toEntity(String encodedPassword) {
-        return User.builder()
-                .email(email)
+    public UserInfo toEntity(String encodedPassword) { 
+        return UserInfo.builder()
+                .userId(userId) 
                 .password(encodedPassword)
-                .name(name)
+                .username(username) 
+                .role("ktcs_user") 
                 .build();
     }
 }

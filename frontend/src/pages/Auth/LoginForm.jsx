@@ -1,9 +1,8 @@
-// src/pages/Auth/LoginForm.jsx
 import React, { useState } from "react";
 import "./LoginForm.css";
 
 function LoginForm({ role, onBack, onLoginSuccess }) {
-  const [employeeId, setEmployeeId] = useState("2024001");
+  const [userId, setUserId] = useState("2025"); // 회원가입 때 넣은 userId
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
@@ -16,30 +15,31 @@ function LoginForm({ role, onBack, onLoginSuccess }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: employeeId,      // 지금은 사번을 이메일 칸처럼 사용
+          userId: userId,
           password: password,
         }),
       });
   
       const data = await response.json();
+      console.log("RESPONSE JSON >>>", data);
   
-      if (!response.ok || !data.isSuccess) {
+      if (!response.ok || !data.success) {
         alert(data.message || "로그인 실패");
         return;
       }
   
-      // 백엔드 result 안에 유저 정보 있다고 가정 (id, email, name)
       const user = data.result;
+      console.log("LOGIN SUCCESS IN FORM >>>", user);
   
       onLoginSuccess({
-        name: user.name,
-        employeeId: employeeId,
+        name: user.username,
+        employeeId: user.userId,
       });
     } catch (error) {
-      console.error(error);
+      console.error("FETCH ERROR >>>", error);
       alert("로그인 요청 중 오류가 발생했습니다.");
     }
-  };
+  };  
 
   return (
     <div className="kt-right">
@@ -60,8 +60,8 @@ function LoginForm({ role, onBack, onLoginSuccess }) {
           <input
             className="kt-input"
             type="text"
-            value={employeeId}
-            onChange={(e) => setEmployeeId(e.target.value)}
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
           />
         </div>
 

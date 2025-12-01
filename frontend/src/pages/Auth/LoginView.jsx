@@ -28,6 +28,7 @@ function LoginView({ setUser }) {
   };
 
   const handleLoginSuccess = (userInfo) => {
+    console.log("LOGIN SUCCESS IN VIEW >>>", userInfo);  // 찍기
     setUser({ name: userInfo.name, role: selectedRole });
     navigate("/home");
   };
