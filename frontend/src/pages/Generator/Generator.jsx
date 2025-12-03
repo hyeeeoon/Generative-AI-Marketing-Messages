@@ -3,29 +3,40 @@ import "./Generator.css";
 
 async function fetchRecipients(userFilters, showRiskOnly) {
     try {
-        const res = await fetch("http://localhost:5001/api/target-customers");
+        const res = await fetch("http://localhost:5001/api/target-customers-full"); // ← 여기만 full로 바꿈!
         if (!res.ok) throw new Error("Failed to fetch customer data");
 
-        const apiData = await res.json();
+        const response = await res.json();  // { success: true, count: 20, data: [...] }
+        console.log("API에서 받은 데이터:", response);
 
-        console.log("API에서 받은 데이터:", apiData);
+        // 핵심 수정: response.data 를 사용!!
+        if (!response.success || !Array.isArray(response.data)) {
+            return [];
+        }
 
-        const data = apiData.map(item => {
+        const data = response.data.map(item => {
             let period = "전체";
             if (item.Contract === "One year") period = "1년 이상";
             else if (item.Contract === "Month-to-month") period = "1개월";
+            else if (item.Contract === "Two year") period = "1년 이상"; // 추가
             else if (item.Contract === "Six months") period = "6개월";
 
             const gender = item.gender === "Female" ? "여성" : "남성";
 
-            // 요금제는 PaymentMethod, MonthlyCharges, 인터넷 종류 등을 활용해 추론 가능하나 명확치 않아 "전체"로 처리
-            // 필요에 따라 plan 매핑 추가 가능
             let plan = "전체";
 
-            // 위험군 판단: months_left가 1 이하일 때 true
-            const risk = typeof item.months_left === "number" && item.months_left <= 1;
+            // months_left 계산 (기존 null이라서 여기서 실시간 계산)
+            let months_left = null;
+            if (item.Churn === "Yes") {
+                months_left = 1;
+            } else if (item.tenure <= 3) {
+                months_left = 2;
+            } else {
+                months_left = Math.max(1, 12 - Math.floor(item.tenure / 2));
+            }
 
-            // 나이 정보가 없어서 전체로 둠 (나중에 나이 데이터 있을 경우 처리 필요)
+            const risk = months_left <= 1;
+
             const age = "전체";
 
             return {
@@ -36,8 +47,9 @@ async function fetchRecipients(userFilters, showRiskOnly) {
                 age,
                 gender,
                 period,
-                network: item.InternetService, // 인터넷 종류 필드도 포함 가능
+                network: item.InternetService,
                 risk,
+                months_left, // 디버깅용으로 추가
             };
         });
 
@@ -53,7 +65,7 @@ async function fetchRecipients(userFilters, showRiskOnly) {
 
         return filtered;
     } catch (error) {
-        console.error(error);
+        console.error("데이터 불러오기 실패:", error);
         return [];
     }
 }
@@ -194,23 +206,27 @@ function Generator() {
                         </button>
                     </div>
                     <ul className="recipientList">
-                        {recipients.map(r => (
-                            <li
-                                key={r.id}
-                                className={`recipientItem${r.risk ? " riskUser" : ""}${selectedIds.includes(r.id) ? " selectedUser" : ""}`}
-                            >
-                                <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedIds.includes(r.id)}
-                                        onChange={() => handleSelect(r.id)}
-                                    />
-                                    <span className="name">{r.name}</span>
-                                    <span className="plan">{r.plan}</span>
-                                    {r.risk && <span className="risk">Risk</span>}
-                                </label>
-                            </li>
-                        ))}
+                        {recipients.length === 0 ? (
+                            <li>로딩 중이거나 데이터 없음...</li>
+                        ) : (
+                            recipients.map(r => (
+                                <li
+                                    key={r.id}
+                                    className={`recipientItem${r.risk ? " riskUser" : ""}${selectedIds.includes(r.id) ? " selectedUser" : ""}`}
+                                >
+                                    <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedIds.includes(r.id)}
+                                            onChange={() => handleSelect(r.id)}
+                                        />
+                                        <span className="name">{r.name}</span>
+                                        <span className="plan">{r.plan}</span>
+                                        {r.risk && <span className="risk">Risk</span>}
+                                    </label>
+                                </li>
+                            ))
+                        )}
                     </ul>
                 </aside>
                 <main className="messageArea">

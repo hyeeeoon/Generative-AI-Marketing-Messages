@@ -8,6 +8,7 @@ import Generator from './pages/Generator/Generator';
 import History from './pages/History';
 import Performance from './pages/Performance';
 import Manager from './pages/Manager';
+import NoticeBoard from './pages/NoticeBoard';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -24,6 +25,7 @@ function App() {
           <Route path="history" element={<History />} />
           <Route path="my_performance" element={<Performance />} />
           <Route path="manager_dashboard" element={<Manager />} />
+          <Route path="notice_board" element={<NoticeBoard />} />
         </Route>
       </Routes>
     </BrowserRouter>

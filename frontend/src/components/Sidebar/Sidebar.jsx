@@ -56,6 +56,13 @@ function Sidebar({ user, onLogout, setCurrentLabel }) {
                             isActive={currentPath === 'my_performance'}
                             onClick={goTo('my_performance', user.role === '관리자' ? '팀 성과 분석' : '나의 성과')}
                         />
+                        <MenuItem
+                            id="notice_board"
+                            icon="chart-line"
+                            label="공지 사항"
+                            isActive={currentPath === 'notice_board'}
+                            onClick={goTo('notice_board',"공지 사항")}
+                        />
                     </>
                 )}
 
