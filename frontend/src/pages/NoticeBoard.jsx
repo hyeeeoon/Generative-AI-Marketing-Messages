@@ -6,71 +6,136 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
     const [notices, setNotices] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [editingId, setEditingId] = useState(null);
-    const [form, setForm] = useState({ title: "", content: "", isImportant: false, author: "관리자" });
+    const [form, setForm] = useState({
+        title: "",
+        content: "",
+        isImportant: false,
+        author: "관리자"
+    });
+    const [userRole, setUserRole] = useState(""); // 로그인한 사용자 role
 
     useEffect(() => {
+        fetchUserRole();
         fetchNotices();
     }, []);
 
-    const fetchNotices = async () => {
+    // 세션에서 role 가져오기 (안전하게)
+    const fetchUserRole = async () => {
         try {
-            const res = await fetch("http://localhost:8080/api/notices");
+            const res = await fetch("http://localhost:8080/api/users/me", {
+                method: "GET",
+                credentials: "include"
+            });
+
             if (res.ok) {
-                const data = await res.json();
-                // 필독 먼저, 최신순 정렬
-                const sorted = data.sort((a, b) => {
-                    if (a.isImportant && !b.isImportant) return -1;
-                    if (!a.isImportant && b.isImportant) return 1;
-                    return new Date(b.createdAt) - new Date(a.createdAt);
-                });
-                setNotices(previewOnly ? sorted.slice(0, recentCount) : sorted);
+                const result = await res.json();
+                if (result && result.data && result.data.role) {
+                    setUserRole(result.data.role);
+                } else {
+                    setUserRole(""); // 로그인 안 된 경우
+                }
+            } else {
+                console.warn("유저 정보 로드 실패", res.status);
+                setUserRole(""); // 로그인 안 된 경우
             }
         } catch (err) {
-            console.error("공지사항 로드 실패", err);
+            console.error("유저 정보 로드 실패", err);
+            setUserRole(""); // 로그인 안 된 경우
         }
     };
 
+    // 공지사항 불러오기
+    const fetchNotices = async () => {
+        try {
+            const res = await fetch("http://localhost:8080/api/notices", {
+                method: "GET",
+                credentials: "include"
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                if (result && result.data) {
+                    const sorted = result.data.sort((a, b) => {
+                        // 필독 공지 먼저
+                        if (a.isImportant !== b.isImportant) {
+                            return a.isImportant ? -1 : 1;
+                        }
+                        // 생성일 기준 내림차순
+                        return new Date(b.createdAt) - new Date(a.createdAt);
+                    });
+                    setNotices(previewOnly ? sorted.slice(0, recentCount) : sorted);
+                } else {
+                    setNotices([]);
+                }
+            } else {
+                console.error("공지사항 로드 실패", res.status, res.statusText);
+                setNotices([]);
+            }
+        } catch (err) {
+            console.error("공지사항 로드 실패", err);
+            setNotices([]);
+        }
+    };
+
+    // 공지사항 등록/수정
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const url = editingId 
+        const url = editingId
             ? `http://localhost:8080/api/notices/${editingId}`
             : "http://localhost:8080/api/notices";
         const method = editingId ? "PUT" : "POST";
 
-        const response = await fetch(url, {
-            method,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                title: form.title,
-                content: form.content,
-                isImportant: form.isImportant,
-                author: form.author
-            })
-        });
+        try {
+            const response = await fetch(url, {
+                method,
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({
+                    title: form.title,
+                    content: form.content,
+                    isImportant: form.isImportant,
+                    author: form.author
+                })
+            });
 
-        if (response.ok) {
-            alert(editingId ? "수정되었습니다." : "등록되었습니다.");
-            setForm({ title: "", content: "", isImportant: false, author: "관리자" });
-            setShowForm(false);
-            setEditingId(null);
-            fetchNotices();
-        } else {
+            if (response.ok) {
+                alert(editingId ? "수정되었습니다." : "등록되었습니다.");
+                setForm({ title: "", content: "", isImportant: false, author: "관리자" });
+                setShowForm(false);
+                setEditingId(null);
+                fetchNotices();
+            } else if (response.status === 403) {
+                alert("권한이 없습니다.");
+            } else {
+                alert("저장에 실패했습니다.");
+            }
+        } catch (err) {
+            console.error("공지사항 저장 실패", err);
             alert("저장에 실패했습니다.");
         }
     };
 
+    // 공지사항 삭제
     const handleDelete = async (id) => {
         if (!window.confirm("정말 삭제하시겠습니까?")) return;
-        
-        const response = await fetch(`http://localhost:8080/api/notices/${id}`, {
-            method: "DELETE"
-        });
 
-        if (response.ok) {
-            alert("삭제되었습니다.");
-            fetchNotices();
-        } else {
+        try {
+            const response = await fetch(`http://localhost:8080/api/notices/${id}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                alert("삭제되었습니다.");
+                fetchNotices();
+            } else if (response.status === 403) {
+                alert("권한이 없습니다.");
+            } else {
+                alert("삭제에 실패했습니다.");
+            }
+        } catch (err) {
+            console.error("공지사항 삭제 실패", err);
             alert("삭제에 실패했습니다.");
         }
     };
@@ -98,12 +163,14 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
         <div className="notice-board-container">
             <div className="notice-header">
                 <h1 className="notice-page-title">공지사항</h1>
-                <button className="notice-write-btn" onClick={() => setShowForm(true)}>
-                    새 글 쓰기
-                </button>
+                {(userRole === "admin" || userRole === "portal_admin") && (
+                    <button className="notice-write-btn" onClick={() => setShowForm(true)}>
+                        새 글 쓰기
+                    </button>
+                )}
             </div>
 
-            {showForm && (
+            {showForm && (userRole === "admin" || userRole === "portal_admin") && (
                 <div className="notice-form-card">
                     <h3>{editingId ? "공지사항 수정" : "새 공지사항 작성"}</h3>
                     <form onSubmit={handleSubmit}>
@@ -170,19 +237,21 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                                 </div>
                                 <p className="notice-body">{n.content}</p>
                             </div>
-                            <div className="notice-actions">
-                                <button onClick={() => {
-                                    setEditingId(n.id);
-                                    setForm({ 
-                                        title: n.title, 
-                                        content: n.content, 
-                                        isImportant: n.isImportant || false,
-                                        author: n.author || "관리자"
-                                    });
-                                    setShowForm(true);
-                                }} className="edit-btn">수정</button>
-                                <button onClick={() => handleDelete(n.id)} className="delete-btn">삭제</button>
-                            </div>
+                            {(userRole === "admin" || userRole === "portal_admin") && (
+                                <div className="notice-actions">
+                                    <button onClick={() => {
+                                        setEditingId(n.id);
+                                        setForm({ 
+                                            title: n.title, 
+                                            content: n.content, 
+                                            isImportant: n.isImportant || false,
+                                            author: n.author || "관리자"
+                                        });
+                                        setShowForm(true);
+                                    }} className="edit-btn">수정</button>
+                                    <button onClick={() => handleDelete(n.id)} className="delete-btn">삭제</button>
+                                </div>
+                            )}
                         </div>
                     ))
                 )}
