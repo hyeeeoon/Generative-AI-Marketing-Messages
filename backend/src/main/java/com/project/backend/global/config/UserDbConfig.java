@@ -1,4 +1,4 @@
-package com.project.backend.config;
+package com.project.backend.global.config;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

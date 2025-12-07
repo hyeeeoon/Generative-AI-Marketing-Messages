@@ -1,5 +1,4 @@
-// src/main/java/com/project/backend/config/CorsConfig.java
-package com.project.backend.config;
+package com.project.backend.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,7 @@ public class CorsConfig {
         config.addAllowedHeader("*");                       // 모든 헤더 허용
         config.addAllowedMethod("*");                       // GET, POST, PUT, DELETE 등 전부 허용
         
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/**", config); // 모든 경로에 CORS 적용
         return new CorsFilter(source);
     }
 }

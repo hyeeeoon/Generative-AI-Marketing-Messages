@@ -1,8 +1,8 @@
-// Sidebar.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './Sidebar.module.css';
 import MenuItem from '../MenuItem';
+import UserInfoModal from '../UserInfoModal/UserInfoModal';
 import KT_LOGO from '../../assets/kt_logo.png';
 import LOGOUT from '../../assets/logout.png';
 
@@ -11,8 +11,22 @@ function Sidebar({ user, onLogout, setCurrentLabel }) {
     const location = useLocation();
     const currentPath = location.pathname.replace('/', '');
 
+    const [openModal, setOpenModal] = useState(false);
+
+    // 영어 role → 한글로 변환
+    const mapRoleToLabel = (role) => {
+        switch (role) {
+            case 'admin': return '관리자';
+            case 'portal_admin': return '포털 관리자';
+            case 'ktcs_user': 
+            default: return '일반 사용자';
+        }
+    };
+
+    const koreanRole = mapRoleToLabel(user.role);
+
     const goTo = (path, label) => () => {
-        setCurrentLabel(label);         // 클릭시 라벨 업데이트
+        setCurrentLabel(label);
         navigate(`/${path}`);
     };
 
@@ -32,7 +46,7 @@ function Sidebar({ user, onLogout, setCurrentLabel }) {
                     onClick={goTo('home', "워크스페이스")}
                 />
 
-                {(user.role === '일반 사용자' || user.role === '관리자') && (
+                {(user.role === 'ktcs_user' || user.role === 'admin') && (
                     <>
                         <div className={styles.menuSection}>MARKETING</div>
                         <MenuItem
@@ -52,9 +66,12 @@ function Sidebar({ user, onLogout, setCurrentLabel }) {
                         <MenuItem
                             id="my_performance"
                             icon="chart-line"
-                            label={user.role === '관리자' ? '팀 성과 분석' : '나의 성과'}
+                            label={user.role === 'admin' ? '팀 성과 분석' : '나의 성과'}
                             isActive={currentPath === 'my_performance'}
-                            onClick={goTo('my_performance', user.role === '관리자' ? '팀 성과 분석' : '나의 성과')}
+                            onClick={goTo(
+                                'my_performance',
+                                user.role === 'admin' ? '팀 성과 분석' : '나의 성과'
+                            )}
                         />
                         <MenuItem
                             id="notice_board"
@@ -66,7 +83,7 @@ function Sidebar({ user, onLogout, setCurrentLabel }) {
                     </>
                 )}
 
-                {user.role === '관리자' && (
+                {user.role === 'admin' && (
                     <>
                         <div className={styles.menuSection}>MANAGEMENT</div>
                         <MenuItem
@@ -74,12 +91,12 @@ function Sidebar({ user, onLogout, setCurrentLabel }) {
                             icon="chart-pie"
                             label="비용/효율 관리"
                             isActive={currentPath === 'manager_dashboard'}
-                            onClick={goTo('manager_dashboard',"비용/효율관리")}
+                            onClick={goTo('manager_dashboard',"비용/효율 관리")}
                         />
                     </>
                 )}
 
-                {user.role === '포털 관리자' && (
+                {user.role === 'portal_admin' && (
                     <>
                         <div className={styles.menuSection}>ADMIN</div>
                         <MenuItem
@@ -122,20 +139,31 @@ function Sidebar({ user, onLogout, setCurrentLabel }) {
                     <div className={styles.profileInfo}>
                         <div className={styles.profileInfoTop}>
                             <span className={styles.profileName}>{user.name}</span>
-                            <button onClick={goTo('my_info')} className={styles.infoBtn}>
+                            <button
+                                onClick={() => setOpenModal(true)}
+                                className={styles.infoBtn}
+                            >
                                 내 정보
                             </button>
                             <button onClick={onLogout} className={styles.logoutIconBtn}>
                                 <img src={LOGOUT} alt="로그아웃" className={styles.logoutImg} />
                             </button>
                         </div>
-                        <span className={styles.profileRole}>{user.role}</span>
+                        <span className={styles.profileRole}>{koreanRole}</span>
                     </div>
                     <button onClick={onLogout} className={styles.logoutBtn}>
                         <i className="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
             </div>
+
+            {/* 모달 */}
+            {openModal && (
+                <UserInfoModal
+                    user={user}
+                    onClose={() => setOpenModal(false)}
+                />
+            )}
         </aside>
     );
 }
