@@ -9,7 +9,7 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
     const [form, setForm] = useState({
         title: "",
         content: "",
-        isImportant: false,
+        important: false,
         author: "관리자"
     });
     const [userRole, setUserRole] = useState(""); // 로그인한 사용자 role
@@ -19,7 +19,7 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
         fetchNotices();
     }, []);
 
-    // 세션에서 role 가져오기 (안전하게)
+    // 세션에서 role 가져오기
     const fetchUserRole = async () => {
         try {
             const res = await fetch("http://localhost:8080/api/users/me", {
@@ -32,15 +32,15 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                 if (result && result.data && result.data.role) {
                     setUserRole(result.data.role);
                 } else {
-                    setUserRole(""); // 로그인 안 된 경우
+                    setUserRole("");
                 }
             } else {
                 console.warn("유저 정보 로드 실패", res.status);
-                setUserRole(""); // 로그인 안 된 경우
+                setUserRole("");
             }
         } catch (err) {
             console.error("유저 정보 로드 실패", err);
-            setUserRole(""); // 로그인 안 된 경우
+            setUserRole("");
         }
     };
 
@@ -54,19 +54,14 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
 
             if (res.ok) {
                 const result = await res.json();
-                if (result && result.data) {
-                    const sorted = result.data.sort((a, b) => {
-                        // 필독 공지 먼저
-                        if (a.isImportant !== b.isImportant) {
-                            return a.isImportant ? -1 : 1;
-                        }
-                        // 생성일 기준 내림차순
-                        return new Date(b.createdAt) - new Date(a.createdAt);
-                    });
-                    setNotices(previewOnly ? sorted.slice(0, recentCount) : sorted);
-                } else {
-                    setNotices([]);
-                }
+                // data 속성이 없으니 그냥 result 사용
+                const sorted = result.sort((a, b) => {
+                    if (a.important !== b.important) {
+                        return a.important ? -1 : 1; // 필독 먼저
+                    }
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+                setNotices(previewOnly ? sorted.slice(0, recentCount) : sorted);
             } else {
                 console.error("공지사항 로드 실패", res.status, res.statusText);
                 setNotices([]);
@@ -94,14 +89,14 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                 body: JSON.stringify({
                     title: form.title,
                     content: form.content,
-                    isImportant: form.isImportant,
+                    important: form.important,
                     author: form.author
                 })
             });
 
             if (response.ok) {
                 alert(editingId ? "수정되었습니다." : "등록되었습니다.");
-                setForm({ title: "", content: "", isImportant: false, author: "관리자" });
+                setForm({ title: "", content: "", important: false, author: "관리자" });
                 setShowForm(false);
                 setEditingId(null);
                 fetchNotices();
@@ -148,8 +143,8 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                     <div className="notice-empty">등록된 공지사항이 없습니다.</div>
                 ) : (
                     notices.map((n) => (
-                        <div key={n.id} className={`notice-preview-item ${n.isImportant ? 'important' : ''}`}>
-                            <span className="notice-prefix">{n.isImportant ? '[필독]' : '·'}</span>
+                        <div key={n.id} className={`notice-preview-item ${n.important ? 'important' : ''}`}>
+                            <span className="notice-prefix">{n.important ? '[필독]' : '·'}</span>
                             <span className="notice-text">{n.title}</span>
                         </div>
                     ))
@@ -196,8 +191,8 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                             <label className="important-checkbox">
                                 <input
                                     type="checkbox"
-                                    checked={form.isImportant}
-                                    onChange={(e) => setForm({ ...form, isImportant: e.target.checked })}
+                                    checked={form.important}
+                                    onChange={(e) => setForm({ ...form, important: e.target.checked })}
                                 />
                                 <span className="checkmark"></span>
                                 필독 공지사항
@@ -209,7 +204,7 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                                 <button type="button" className="cancel-btn" onClick={() => {
                                     setShowForm(false);
                                     setEditingId(null);
-                                    setForm({ title: "", content: "", isImportant: false, author: "관리자" });
+                                    setForm({ title: "", content: "", important: false, author: "관리자" });
                                 }}>
                                     취소
                                 </button>
@@ -224,9 +219,9 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                     <div className="notice-empty-full">아직 등록된 공지사항이 없습니다.</div>
                 ) : (
                     notices.map((n) => (
-                        <div key={n.id} className={`notice-item ${n.isImportant ? 'important-notice' : ''}`}>
+                        <div key={n.id} className={`notice-item ${n.important ? 'important-notice' : ''}`}>
                             <div className="notice-content">
-                                {n.isImportant && <div className="important-badge">필독</div>}
+                                {n.important && <div className="important-badge">필독</div>}
                                 <h3 className="notice-title">{n.title}</h3>
                                 <div className="notice-meta">
                                     작성자: {n.author} | 
@@ -244,7 +239,7 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                                         setForm({ 
                                             title: n.title, 
                                             content: n.content, 
-                                            isImportant: n.isImportant || false,
+                                            important: n.important || false,
                                             author: n.author || "관리자"
                                         });
                                         setShowForm(true);

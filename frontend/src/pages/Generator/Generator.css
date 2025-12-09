@@ -1,168 +1,380 @@
+/* ================== 전체 레이아웃 ================== */
+
 .container {
-    padding: 24px;
-    background: #fff;
-}
-.topFilter {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    margin-bottom: 4px;
-}
-.generateBtn {
-    background: #ff233c;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-}
-.extraSection {
-    margin: 16px 0 10px 0;
-}
-.extraInput {
-    width: 400px;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-}
-.body {
-    display: flex;
-    min-height: 500px;
-}
-.sideFilter {
-    min-width: 260px;
-    margin-right: 24px;
-}
-.userFilter {
+    height: 100vh;            /* 화면 전체 높이 */
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 16px;
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;      /* 전체 배경색 */
 }
+
+/* ================== 상단 영역 ================== */
+
+.topBar {
+    padding: 15px 20px;       /* 상단 전체 패딩 */
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;   /* 필터 줄 / 추가문구 줄 위아래 배치 */
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* 상단 필터 + 버튼 한 줄 */
+.topControls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* 상단 드롭다운 공통 스타일 */
+.filterSelect {
+    font-size: 1em;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-weight: 500;
+    transition: border-color 0.2s;
+}
+.filterSelect:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+/* 상단 추가 문구 입력 */
+.extraInput {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+.extraInput:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+/* ================== 메인 영역(왼쪽 필터 + 오른쪽 메시지) ================== */
+
+.body {
+    display: flex;
+    flex: 1;              /* 상단 제외 나머지 전부 사용 */
+    overflow: hidden;
+    gap: 20px;
+}
+
+/* ================== 버튼 공통 스타일 ================== */
+
+.smallBtn, .bigBtn {
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background 0.18s, box-shadow 0.18s;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
+}
+
+/* 사이드바용 작은 버튼 */
+.smallBtn {
+    font-size: 0.9em;
+    padding: 7px 14px;
+    background: #e5e7eb;
+    color: #374151;
+}
+.smallBtn:hover {
+    background: #d1d5db;
+}
+
+/* 상단 주요 액션 버튼 */
+.bigBtn {
+    font-size: 1em;
+    padding: 10px 20px;
+    background: #ef4444;
+    color: #fff;
+}
+.bigBtn:hover {
+    background: #dc2626;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* 상단 “선택보내기” 등 다른 톤 버튼 */
+.bigBtn.sendAllBtn {
+    background: #1f2937;
+}
+.bigBtn.sendAllBtn:hover {
+    background: #000;
+}
+
+/* 비동기 처리 중 비활성화 버튼 */
+.bigBtn.loading {
+    background: #9ca3af !important;
+    cursor: not-allowed;
+    color: #4b5563;
+}
+
+/* ================== 왼쪽: 고객 목록/필터 ================== */
+
+.sideFilter {
+    width: 300px;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* 고객 필터 + 액션 버튼 줄 */
+.userFilter {
+    padding: 10px 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* 사이드바 내부 셀렉트/버튼 공통 */
+.sideFilter .userFilter select,
+.sideFilter .userFilter button {
+    font-size: 0.9em;
+    padding: 7px 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background: #fff;
+    flex-grow: 1;
+}
+
+/* 사이드바 버튼 호버 */
+.sideFilter .userFilter button {
+    background: #f3f4f6;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+}
+.sideFilter .userFilter button:hover {
+    background: #e5e7eb;
+}
+
+/* “위험군만 보기” 활성화 상태 */
+.riskToggleBtn.active {
+    background: #f97316;
+    color: #fff;
+    border: 1px solid #ea580c;
+}
+.riskToggleBtn.active:hover {
+    background: #ea580c;
+}
+
+/* ================== 고객 목록 스크롤 영역 ================== */
+
+.recipientListContainer {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;   /* 스크롤바 여백 */
+}
+
+/* 스크롤바 (웹킷) */
+.recipientListContainer::-webkit-scrollbar {
+    width: 6px;
+}
+.recipientListContainer::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+/* 실제 목록 리스트 */
 .recipientList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
+
+/* 개별 고객 항목 */
 .recipientItem {
-    background: #f9f9f9;
-    border-radius: 6px;
-    border: 1px solid #eee;
-    padding: 12px 8px;
-    margin-bottom: 10px;
+    padding: 12px 10px;
+    border-bottom: 1px solid #f3f4f6;
+    cursor: pointer;
+    transition: background-color 0.2s, border-left 0.2s;
+    background: #fff;
     display: flex;
     align-items: center;
-    font-size: 1.06em;
-    transition: border 0.15s;
+    font-size: 1em;
+}
+.recipientItem:hover {
+    background-color: #f7f7f7;
 }
 
-.selectedUser {
-    border: 2px solid #ff233c;
-    background: #ffecee;
+/* 선택된 고객 강조 */
+.recipientItem.selectedUser {
+    background-color: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding-left: 6px;
+    font-weight: bold;
 }
-.name { font-weight: bold; margin-right: 8px; font-size:1.07em;}
-.plan { margin-right: 7px; color: #888; font-size: 0.97em; }
-.price, .age, .gender, .network, .period { margin-right: 7px; color: #888; font-size: 0.97em; }
-.risk { color: #ff233c; margin-left: 5px; font-size: 0.97em; font-weight: bold; }
+
+/* 고객 항목 내부 텍스트 */
+.recipientItem .name {
+    font-weight: 600;
+    margin-right: 10px;
+    color: #1f2937;
+}
+.recipientItem .plan {
+    font-size: 0.85em;
+    color: #6b7280;
+    margin-right: 10px;
+}
+
+/* 위험군 태그 */
+.riskTag {
+    background-color: #fee2e2;
+    color: #ef4444;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    font-weight: bold;
+}
+.recipientItem.riskUser {
+    border-left: 4px solid #ef4444;
+}
+
+/* ================== 오른쪽: 메시지 카드 영역 ================== */
+
 .messageArea {
     flex: 1;
+    overflow-y: auto;
     display: flex;
-    gap: 20px;
     flex-wrap: wrap;
-    align-items: flex-start;
-    min-height: 320px;
+    gap: 20px;
+    align-content: flex-start;
 }
-.emptyMsg {
-    margin: 60px auto;
-    color: #999;
-    font-size: 1.18em;
+
+/* 메시지 영역 스크롤바 */
+.messageArea::-webkit-scrollbar {
+    width: 8px;
 }
-.messageBox {
-    min-width: 340px;
-    max-width: 420px;
-    border: 2px solid #ff233c;
-    border-radius: 9px;
-    padding: 18px 12px 12px 16px;
-    background: #fff9fa;
-    margin-bottom: 18px;
-    box-shadow: 0 0 5px #ffe3eb33;
-    position: relative;
-}
-.msgMetaHeader {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    font-size: 1.09em;
-    margin-bottom: 9px;
-}
-.msgName { font-weight: bold; font-size:1.08em; }
-.msgTag { background: #eee; color: #555; font-size:0.93em; border-radius: 7px; padding: 3px 9px; margin-left:2px;}
-.msgTone { background: #ffedf7; color: #805cff; border-radius: 7px; padding: 3px 7px; font-size: 0.93em; margin-left:3px;}
-.msgBoxContent {
-    background: #fff;
-    padding: 6px 5px 6px 2px;
-}
-.msgActions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-}
-.msgEditBtn, .msgSendBtn {
-    padding: 5px 16px;
-    border-radius: 6px;
-    border: none;
-    background: #eee;
-    font-weight: bold;
-    cursor: pointer;
-}
-.msgSendBtn { background: #ff233c; color: #fff; }
-.messageInput {
-    width: 90%;
-    height: 100px;
-    resize: none;
+.messageArea::-webkit-scrollbar-thumb {
+    background: #ccc;
     border-radius: 4px;
-    border: 1px solid #ccd;
-    padding: 10px;
-    font-size: 1em;
+}
+
+/* 메시지 없음 안내 문구 */
+.emptyMsg {
+    width: 100%;
+    text-align: center;
+    color: #999;
+    padding: 40px;
+    font-size: 1.1em;
+}
+
+/* 개별 메시지 카드 */
+.messageBox {
+    margin-top: 20px;
+    width: calc(50% - 15px);    /* 2열 배치 (gap 20px 고려) */
+    min-width: 300px;
     background: #fff;
-    margin-top: 5px;
-}
-
-.topFilter.largeFilter {
-    padding: 24px 16px;
-    display: flex;
-    gap: 22px;
-    align-items: center;
-    background: #fafafb;
-    border-radius: 14px;
-    margin-bottom: 18px;
-    box-shadow: 0 2px 18px #f2e2ee33;
-}
-
-.filterSelect {
-    font-size: 1.15em;
-    padding: 10px 18px;
+    border: 1px solid #eee;
     border-radius: 8px;
-    border: 1.5px solid #ddd;
-    background: #fff;
-    min-width: 175px;
-    font-weight: 500;
-    margin-right: 5px;
+    box-shadow: 0 4px 12px #0000000a;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s;
+}
+.messageBox:hover {
+    box-shadow: 0 6px 16px #00000015;
 }
 
-.bigBtn {
-    font-size: 1.16em;
-    padding: 13px 28px;
-    border-radius: 9px;
-    border: none;
-    background: #ff233c;
-    color: #fff;
-    font-weight: bold;
-    box-shadow: 0 1px 4px #ff233c22;
-    transition: background 0.18s;
-    cursor: pointer;
+/* 메시지 카드 상단 메타 영역 */
+.msgMetaHeader {
+    padding: 10px 10px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95em;
+    font-weight: 500;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
-.bigBtn:hover {
-    background: #ee112a;
+
+/* 고객 이름(좌측) */
+.msgName {
+    font-weight: bold;
+    color: #333;
+    flex-grow: 1;
+}
+
+/* 채널 / 톤 태그 */
+.msgTag, .msgTone {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+/* 메시지 본문 영역 */
+.msgBoxContent {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+/* 메시지 입력 textarea */
+.messageInput {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 0.95em;
+    resize: vertical;
+    box-sizing: border-box;
+    transition: background 0.2s;
+}
+.messageInput:disabled {
+    background: #fcfcfc;
+    border-color: #eee;
+    color: #444;
+}
+
+/* 카드 하단 액션 버튼 영역 */
+.msgActions {
+    padding: 10px 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* 카드 하단 버튼 공통 */
+.msgEditBtn, .msgSendBtn {
+    padding: 6px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+/* 수정 버튼 */
+.msgEditBtn {
+    background: #94a3b8;
+    color: #fff;
+}
+.msgEditBtn:hover {
+    background: #64748b;
+}
+
+/* 전송 버튼 */
+.msgSendBtn {
+    background: #ef4444;
+    color: #fff;
+}
+.msgSendBtn:hover {
+    background: #b91010;
 }
