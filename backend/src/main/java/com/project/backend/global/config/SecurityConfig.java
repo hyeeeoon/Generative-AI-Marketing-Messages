@@ -40,22 +40,26 @@ public class SecurityConfig {
                 .requestMatchers("/api/users/signup").permitAll()
                 .requestMatchers("/api/users/me").permitAll() 
 
+                .requestMatchers("/api/users").permitAll()
+
                 // ===== 공지사항 =====
                 .requestMatchers(HttpMethod.GET, "/api/notices/**").permitAll() // 조회는 누구나 가능
                 // 작성, 수정, 삭제는 관리자만
-                .requestMatchers(HttpMethod.POST, "/api/notices/**").hasAnyAuthority("admin", "portal_admin")
+                .requestMatchers(HttpMethod.POST, "/api/notices/**").permitAll() // 조회는 누구나 가능
                 .requestMatchers(HttpMethod.PUT, "/api/notices/**").hasAnyAuthority("admin", "portal_admin")
                 .requestMatchers(HttpMethod.DELETE, "/api/notices/**").hasAnyAuthority("admin", "portal_admin")
 
+                // ===== 전송이력 =====
+                .requestMatchers(HttpMethod.GET, "/api/history").permitAll()
 
-                // ===== 관리자 =====
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                // ===== 관리자 (hasAuthority()로 변경) =====
+                .requestMatchers("/api/admin/**").hasAuthority("admin")
                 
-                // ===== 포털 관리자 =====
-                .requestMatchers("/api/portal/**").hasRole("PORTAL_ADMIN")
+                // ===== 포털 관리자 (hasAuthority()로 변경) =====
+                .requestMatchers("/api/portal/**").hasAuthority("portal_admin")
                 
                 // ===== 그 외 =====
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             )
             
             // ----------------- 세션 관리 -----------------
