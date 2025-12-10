@@ -21,7 +21,8 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(
     basePackages = {
         "com.project.backend.domain.user.repository",
-        "com.project.backend.domain.notice.repository"   // ← 추가
+        "com.project.backend.domain.notice.repository",
+        "com.project.backend.domain.history.repository"
     },
     entityManagerFactoryRef = "userEntityManager",
     transactionManagerRef = "userTransactionManager"
@@ -52,7 +53,8 @@ public class UserDbConfig {
                 .dataSource(dataSource)
                 .packages(
                     "com.project.backend.domain.user.entity",
-                    "com.project.backend.domain.notice.entity"   // ← 추가
+                    "com.project.backend.domain.notice.entity",
+                    "com.project.backend.domain.history.entity"
                 )
                 .persistenceUnit("user")
                 .build();
