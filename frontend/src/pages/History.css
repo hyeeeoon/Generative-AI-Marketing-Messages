@@ -1,0 +1,129 @@
+.history-container {
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    max-width: 1400px;
+    margin: 30px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.history-container h1 {
+    font-size: 1.8em;
+    color: #374151;
+    border-bottom: 2px solid #ef4444; /* 레드 강조 */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* ⭐ 필터 컨트롤 영역 스타일 (추가/수정) */
+.filter-controls {
+    margin-bottom: 15px;
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.filter-controls label {
+    margin-right: 10px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.period-select-box {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #fff;
+    appearance: none; /* 기본 OS 스타일 제거 */
+}
+
+.filter-summary {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    color: #6b7280;
+}
+/* ----- 필터 컨트롤 끝 ----- */
+
+
+.history-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.history-table th, 
+.history-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.history-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.history-table tbody tr {
+    cursor: pointer; /* 클릭 가능 표시 */
+}
+
+.history-table tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+/* ⭐ 메시지 전문 보기 관련 스타일 */
+.content-cell {
+    max-width: 350px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+/* ⭐ 클릭 시 전체 내용 표시 (토글) */
+.history-table .content-cell.content-expanded {
+    white-space: pre-wrap; 
+    overflow: visible; 
+    max-width: none; 
+    position: relative; 
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 4px;
+    line-height: 1.5;
+    z-index: 10; /* 다른 요소 위에 표시 */
+}
+
+
+/* 기타 스타일 */
+.channel-tag {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.85em;
+}
+
+.channel-tag.sms {
+    background-color: #ffe4e6;
+    color: #ef4444;
+}
+
+.channel-tag.알림톡 {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.no-history {
+    text-align: center;
+    padding: 50px 0;
+    color: #9ca3af;
+}
