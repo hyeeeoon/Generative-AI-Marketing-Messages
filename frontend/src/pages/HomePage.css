@@ -1,0 +1,239 @@
+/* HomePage.css - 완전 최종 완성본 */
+.home-wrap {
+    padding: 30px;
+    font-family: sans-serif;
+    background: #f9fafc;
+    min-height: 100vh;
+}
+
+.home-title {
+    margin-bottom: 8px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.home-subtitle {
+    color: #606a7c;
+    margin-bottom: 32px;
+}
+
+.home-main-row {
+    display: flex;
+    gap: 28px;
+}
+
+.home-main-card {
+    flex: 2;
+    background: linear-gradient(90deg, #1a2442 60%, #20305a 100%);
+    border-radius: 20px;
+    color: #fff;
+    padding: 32px 48px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.badge-hot {
+    background: #fa3825;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-right: 12px;
+    display: inline-block;
+}
+
+.event-title {
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.event-desc {
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+.event-btn {
+    background: #fff;
+    color: #22375d;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px 24px;
+    border: none;
+    cursor: pointer;
+}
+
+.quicklinks-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 24px;
+    min-width: 260px;
+    margin-bottom: 24px;
+}
+
+.quicklinks-title {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+
+.quicklinks-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.quicklinks-item {
+    margin-bottom: 10px;
+}
+
+.quicklinks-link {
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.home-bottom-row {
+    display: flex;
+    gap: 28px;
+}
+
+.notices-card {
+    flex: 2;
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 2px 6px #e5e9f2;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.notices-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000000;
+    margin: 0 0 14px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notice-more-btn {
+    background: none;
+    border: none;
+    color: #000000;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.notice-more-btn:hover {
+    text-decoration: underline;
+}
+
+.result-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 2px 6px #e5e9f2;
+}
+
+.result-title {
+    font-weight: bold;
+    margin-bottom: 14px;
+}
+
+.result-row {
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.result-value {
+    font-weight: bold;
+    float: right;
+}
+
+.result-analyze-btn {
+    margin-top: 14px;
+    width: 100%;
+    padding: 7px;
+    background: #f4f4f7;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 공지사항 미리보기 전용 스타일 (너 디자인 완벽 유지) */
+.notice-preview-list {
+    margin-top: 8px;
+}
+
+.notice-preview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14.5px;
+    color: #333;
+    transition: background 0.2s;
+}
+
+.notice-preview-row:hover {
+    background: #fdfdfd;
+}
+
+.notice-preview-row:last-child {
+    border-bottom: none;
+}
+
+.notice-preview-row.important {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+.important-tag {
+    background: #e74c3c;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 7px;
+    border-radius: 4px;
+    margin-right: 8px;
+    letter-spacing: 0.5px;
+}
+
+.notice-preview-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.notice-preview-date {
+    color: #95a5a6;
+    font-size: 13px;
+    min-width: 70px;
+    text-align: right;
+    font-weight: 500;
+}
+
+.notice-preview-empty {
+    color: #bdc3c7;
+    font-style: italic;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+}

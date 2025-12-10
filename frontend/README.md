@@ -41,7 +41,12 @@ src/                                   # 리액트 소스 코드 루트
 │   │   ├── Input.js                   # 재사용 입력폼 컴포넌트
 │   │   └── index.js                   # Common export
 ├── pages/                             # 실제 화면 단위, 라우터 연결 기준
-│   └── Auth/                          # 로그인/회원가입/권한 관리 관련 페이지
+│   └── Admin/                         
+│   │   ├── AdminSettingsPage.jsx      # 시스템설정 화면
+│   │   ├── AdminSettingsPage.css      # 
+│   │   ├── AdminUsers.jsx             # 사용자 관리
+│   │   └── AdminUsers.css
+│   ├── Auth/                          # 로그인/회원가입/권한 관리 관련 페이지
 │   │   ├── LoginView.jsx              # 로그인 레이아웃 + 단계 전환 (실제로 보이는 전체 로그인 화면)
 │   │   ├── LoginPage.jsx              # 로그인 권한 선택 화면 (역할 선택 페이지)
 │   │   ├── LoginForm.jsx              # 실제 로그인 폼 (아이디/비번 입력)
@@ -51,39 +56,23 @@ src/                                   # 리액트 소스 코드 루트
 │   │   ├── SignupPage.css             # 회원가입 전용 스타일         # (SignupPage 디자인)
 │   │   └── LoginForm.css              # 로그인 폼 전용 스타일        # (LoginForm 디자인)
 │   │                                
-│   ├── Dashboard/                     # 데이터 요약, 시각화 대시보드
-│   │   └── DashboardPage.js           # 대시보드 메인페이지
-│   ├── Customers/                     # 고객 CRUD + 상세 정보, 히스토리
-│   │   ├── CustomersListPage.js       # 고객 리스트 조회 화면
-│   │   ├── CustomerDetailPage.js      # 고객 상세 정보 페이지
-│   │   └── CustomerCreatePage.js      # 신규 고객 생성 페이지
-│   ├── Services/                      # 서비스/요금제 기능 페이지
-│   │   ├── ServiceListPage.js         # 서비스 리스트 화면
-│   │   ├── ServiceDetailPage.js       # 서비스 상세 정보
-│   │   └── ServiceCreatePage.js       # 신규 서비스 등록 페이지
-│   ├── Segments/                      # 고객 분류/세그먼트 기능 페이지
-│   │   ├── SegmentListPage.js         # 세그먼트 목록
-│   │   ├── SegmentDetailPage.js       # 세그먼트 상세
-│   │   └── SegmentCreatePage.js       # 신규 세그먼트 생성
 │   ├── Messages/                      # AI 자동 메시징 관리 페이지
-│   │   ├── MessageListPage.js         # 메시지 목록 조회
+│   │   ├── 
 │   │   ├── MessageCreatePage.js       # 메시지 생성(AI 요청 포함)
-│   │   └── MessageSendPage.js         # 메시지 발송 및 테스트
-│   ├── AISettings/                    # AI 엔진 관련 설정 관리 페이지
-│   │   ├── AIGuidelinePage.js         # AI 지침 관리
-│   │   └── AIModelPage.js             # AI 모델 관리
-│   └── SystemLogs/                    # 시스템 로그 페이지
-│       └── SystemLogPage.js           # 시스템 로그 조회
+│   │   └── MessageCreatePage.css
+│   │ 
+│   ├── HomePage.jsx                   # 메인 페이지
+│   ├── HomePage.css                   
+│   ├── History.jsx                    # 전송 이력
+│   ├── Manager.jsx                    # 비용/효율관리
+│   ├── NoticeBoard.css                 
+│   ├── NoticeBoard.jsx                # 공지사항
+│   ├── Performance.jsx                # 나의 성과
+│   └── TeamPerformance.jsx            # 팀 성과 분석
+│
 ├── assets/                            # 이미지, 폰트 등 정적 리소스
 │   └── kt_logo.png                    # 예시 이미지(사이드바 로고 등)
-├── styles/                            # 글로벌 스타일 파일
-│   ├── App.css                        # 전체 앱 공통 스타일
-│   └── index.css                      # 기본/추가 커스텀 CSS
-├── utils/                             # 전역 유틸 함수, API 등
-│   ├── api.js                         # axios 등 API 요청 함수
-│   └── auth.js                        # 토큰 등 인증/로그인 유틸 함수
-├── routes/                            # 리액트 라우터(페이지-컴포넌트 연결)
-│   └── AppRoutes.js                   # 전체 라우팅 관리 파일
+│
 ├── App.js                             # 전체 앱 루트 컴포넌트(레이아웃+라우팅)
 ├── index.js                           # React DOM 진입점, App 렌더링
-└── ...env, config, 기타 전역 설정 파일 등 필요에 따라 추가
+└── gemini.js                          # AI 프롬프트 

@@ -8,6 +8,7 @@ import com.project.backend.domain.user.exception.UserExistsException;
 import com.project.backend.domain.user.exception.UserNotFoundException;
 import com.project.backend.domain.user.repository.UserInfoRepository; 
 import lombok.RequiredArgsConstructor;
+import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,19 +18,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
 
-    private final UserInfoRepository userInfoRepository; 
+    private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserInfoDto.Response signup(SignupRequestDto request) { 
-        // userId로 중복 체크 (email → userId)
+    public UserInfoDto.Response signup(SignupRequestDto request) {
+
         if (userInfoRepository.existsByUserId(request.getUserId())) {
             throw new UserExistsException("이미 존재하는 사용자 ID입니다.");
         }
 
         String encodedPw = passwordEncoder.encode(request.getPassword());
-        UserInfo userInfo = request.toEntity(encodedPw); 
-        UserInfo saved = userInfoRepository.save(userInfo); 
+        UserInfo userInfo = request.toEntity(encodedPw);
+        UserInfo saved = userInfoRepository.save(userInfo);
+
         return UserInfoDto.Response.from(saved);
     }
 
@@ -42,7 +44,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 역할 검증: DB에 저장된 역할 vs 로그인 시 선택한 역할
+        // 권한 확인
         if (request.getRole() != null && !request.getRole().isBlank()) {
             if (!request.getRole().equals(user.getRole())) {
                 throw new IllegalArgumentException("선택한 권한으로는 로그인할 수 없습니다.");
@@ -52,10 +54,15 @@ public class UserService {
         return UserInfoDto.Response.from(user);
     }
 
-
-    public UserInfoDto.Response getUser(Long id) { 
+    public UserInfoDto.Response getUser(Long id) {
         UserInfo userInfo = userInfoRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
         return UserInfoDto.Response.from(userInfo);
+    }
+
+    public List<UserInfoDto.Response> getAllUsers() {
+        return userInfoRepository.findAll().stream()
+                .map(UserInfoDto.Response::from)
+                .toList();
     }
 }

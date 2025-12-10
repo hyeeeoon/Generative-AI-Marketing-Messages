@@ -5,55 +5,50 @@ function LoginForm({ role, onBack, onLoginSuccess }) {
   const [userId, setUserId] = useState("2025");
   const [password, setPassword] = useState("");
 
-  // 한글 역할명 → 코드 매핑 (회원가입과 동일 룰)
-  const mapRoleToCode = (roleLabel) => {
-    switch (roleLabel) {
-      case "관리자":
-        return "admin";
-      case "포털 관리자":
-        return "portal_admin";
-      case "일반 사용자":
-      default:
-        return "ktcs_user";
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const roleCode = mapRoleToCode(role);
-
+  
     try {
       const response = await fetch("http://localhost:8080/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           userId: userId,
           password: password,
-          role: roleCode,          // ★ 로그인 시 선택 역할도 같이 전송
+          role: role, 
         }),
       });
-
+  
       const data = await response.json();
-
+  
+      console.log("LoginForm fetch result:", data.result); // 여기에 콘솔 추가
+  
       if (!response.ok || !data.success) {
         alert(data.message || "로그인 실패");
         return;
       }
-
+  
       const user = data.result;
-
+  
+      console.log("Sending to App:", {
+        username: user.username,
+        userId: user.userId,
+        role: user.role,
+      }); // 여기서도 콘솔
+  
       onLoginSuccess({
-        name: user.username,
-        employeeId: user.userId,
+        username: user.username,
+        userId: user.userId,
+        role: user.role,
       });
     } catch (error) {
       console.error(error);
       alert("로그인 요청 중 오류가 발생했습니다.");
     }
-  };
+  };  
 
   return (
     <div className="kt-right">

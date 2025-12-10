@@ -1,0 +1,164 @@
+/* AdminUsers.css (미니멀 & 레드 포인트 디자인) */
+
+/* ================== 변수 정의 (선택 사항) ================== */
+:root {
+    --primary-red: #ef4444; /* 강조색 (버튼, 호버) */
+    --hover-red: #dc2626;   /* 강조색 호버 */
+    --delete-red: #b91010;  /* 삭제 버튼 */
+    --light-bg: #f7f7f7;    /* 테이블 홀수줄 배경 */
+    --border-color: #e5e7eb; /* 경계선 */
+    --background-color: #ffffff; /* 컨테이너 배경 */
+    --text-color: #513737;  /* 기본 텍스트 색상 */
+}
+
+/* ================== 전체 컨테이너 ================== */
+
+.admin-users-container {
+    padding: 30px;
+    background-color: var(--background-color);
+    border-radius: 12px;
+    max-width: 1200px;
+    margin: 30px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.admin-users-container h1 {
+    font-size: 1.8em;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--primary-red);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* ================== 검색 및 등록 버튼 영역 ================== */
+
+.controls-top {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 15px;
+    width: 300px; 
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+    border-color: var(--primary-red);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.no-result {
+    text-align: center;
+    padding: 40px 0;
+    color: #9ca3af;
+    font-size: 1.1em;
+}
+
+
+/* ================== 테이블 영역 및 Wrapper ================== */
+
+.user-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.user-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* 테이블 헤더 */
+.user-list-table th {
+    background-color: #f8fafc; 
+    font-weight: 600;
+    color: #4b5563;
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    border-top: none; 
+}
+
+/* 테이블 셀 */
+.user-list-table td {
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 20px;
+    text-align: left;
+    color: var(--text-color);
+    vertical-align: middle;
+}
+
+/* 테이블 바디 행 */
+.user-list-table tbody tr:last-child td {
+    border-bottom: none; 
+}
+
+.user-list-table tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+/* ================== 액션 버튼 및 컨트롤 ================== */
+
+.action-btn {
+    padding: 7px 12px;
+    margin-right: 8px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* 수정 버튼 (기본 액션: 붉은색 강조) */
+.edit-btn {
+    background-color: var(--primary-red);
+    color: white;
+}
+.edit-btn:hover {
+    background-color: var(--hover-red);
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+/* 삭제 버튼 (보조 액션: 흰색/붉은색 경계) */
+.delete-btn {
+    background-color: white;
+    color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+.delete-btn:hover {
+    background-color: var(--delete-red);
+    color: white;
+    border-color: var(--delete-red);
+}
+
+/* 새 사용자 등록 버튼 */
+.add-user-btn {
+    padding: 12px 20px;
+    background-color: #b91010; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(185, 16, 16, 0.2);
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+.add-user-btn:hover {
+    background-color: #960505;
+    box-shadow: 0 4px 8px rgba(185, 16, 16, 0.3);
+}

@@ -12,13 +12,14 @@ public class SignupRequestDto {
     private String userId; 
     private String password;
     private String username; 
+    private String role;
 
     public UserInfo toEntity(String encodedPassword) { 
         return UserInfo.builder()
                 .userId(userId) 
                 .password(encodedPassword)
                 .username(username) 
-                .role("ktcs_user") 
+                .role(role != null && !role.isBlank() ? role : "ktcs_user") 
                 .build();
     }
 }

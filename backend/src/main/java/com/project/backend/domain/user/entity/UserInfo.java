@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "userInfo")
+@Table(name = "user_info")
 public class UserInfo {
 
     @Id
@@ -20,19 +20,17 @@ public class UserInfo {
     @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "userId", unique = true, nullable = false)
-    private String userId;  // 로그인 ID
+    @Column(name = "user_id", unique = true, nullable = false)
+    private String userId;
 
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "role")
-    private String role;    // "ktcs_user" / "admin" / "portal_admin" 
+    @Builder.Default
+    private String role = "ktcs_user";   // ← 기본값도 여기서 주면 더 좋음
 
-    @Column(name = "organization")
-    private String organization;
-
-    @Column(name = "createdAt")
+    @Column(name = "created_at") 
     private LocalDateTime createdAt;
 
     @PrePersist

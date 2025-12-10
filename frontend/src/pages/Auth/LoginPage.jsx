@@ -3,9 +3,9 @@ import React from "react";
 import styles from "./Login.module.css";
 
 const roles = [
-  { key: "일반 사용자", icon: "fa-users", title: "일반 사용자", desc: "메시지 생성 및 고객 상담" },
-  { key: "관리자", icon: "fa-chart-pie", title: "관리자", desc: "팀 성과 관리 및 분석" },
-  { key: "포털 관리자", icon: "fa-user-gear", title: "포털 관리자", desc: "시스템 설정 및 사용자 관리" },
+  { key: "ktcs_user", icon: "fa-users", title: "일반 사용자", desc: "메시지 생성 및 고객 상담" },
+  { key: "admin", icon: "fa-chart-pie", title: "관리자", desc: "팀 성과 관리 및 분석" },
+  { key: "portal_admin", icon: "fa-user-gear", title: "포털 관리자", desc: "시스템 설정 및 사용자 관리" },
 ];
 
 function LoginPage({ onSelect, onGoSignup }) {

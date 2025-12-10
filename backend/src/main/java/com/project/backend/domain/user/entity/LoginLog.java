@@ -1,3 +1,4 @@
+//지금 당장은 필요없음 다른 급한게 많음
 package com.project.backend.domain.login.entity;
 
 import jakarta.persistence.*;
