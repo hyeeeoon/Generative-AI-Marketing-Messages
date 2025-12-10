@@ -16,12 +16,14 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/history")
+
 public class HistoryController {
 
     private final HistoryService historyService;
 
-    // 세션에서 사용자 정보 가져오는 유틸리티 (UserController와 동일)
+    // 세션에서 사용자 정보 가져오는 유틸리티
     private UserInfoDto.Response getSessionUser(HttpSession session) {
+        // UserInfoDto.Response 클래스는 반드시 @Getter가 포함되어야 합니다.
         return (UserInfoDto.Response) session.getAttribute("LOGIN_USER");
     }
 
@@ -38,6 +40,7 @@ public class HistoryController {
                     .body(ApiResponse.failure("로그인 필요"));
         }
 
+        // HistoryService의 record 메서드 호출 시, sender 객체의 ID를 사용합니다.
         HistoryResponse response = historyService.record(request, sender); 
         
         return ResponseEntity.ok(
@@ -55,6 +58,7 @@ public class HistoryController {
                     .body(ApiResponse.failure("로그인 필요"));
         }
         
+        // HistoryService의 getFilteredHistory 메서드 호출 시, currentUser 객체를 사용합니다.
         List<HistoryResponse> historyList = historyService.getFilteredHistory(currentUser);
         
         return ResponseEntity.ok(
