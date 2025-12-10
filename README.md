@@ -22,7 +22,7 @@
 
 ## 🛠️ 기술 스택 (임시)
 - **프론트엔드**: React.js, Tailwind CSS  
-- **백엔드**: Node.js (Express) / Python (Flask)  
+- **백엔드**: Node.js (Express), Spring Boot (Java)
 - **데이터베이스**: MySQL
 - **CI/CD & 배포**: Docker, GitHub Actions  
 
