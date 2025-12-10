@@ -1,6 +1,7 @@
 import { callGeminiAPI } from "../../gemini";
 import React, { useState, useEffect } from "react";
-import "./Generator.css"; // 이 CSS 파일에 기반하여 클래스 사용
+import { useNavigate } from "react-router-dom"; // ⭐ useNavigate import 추가
+import "./MessageCreatePage.css"; 
 
 // 임시 API 함수: 데이터 가져오기 (기존 코드 유지)
 async function fetchRecipients(userFilters, showRiskOnly) {
@@ -9,7 +10,7 @@ async function fetchRecipients(userFilters, showRiskOnly) {
         if (!res.ok) throw new Error("Failed to fetch customer data");
 
         const response = await res.json();
-        if (!response.success || !Array.isArray(response.data)) {
+        if (!response.success || !Array.isArray(response.data)) { 
             return [];
         }
 
@@ -69,7 +70,33 @@ async function fetchRecipients(userFilters, showRiskOnly) {
     }
 }
 
-function Generator() {
+//전송 이력 서버 저장 API 호출
+const sendToServer = async (payload) => {
+    try {
+        const res = await fetch("http://localhost:8080/api/history/send", {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`전송 기록 저장 실패: ${res.status}. ${errorText.substring(0, 50)}...`);
+        }
+        return true;
+    } catch (error) {
+        console.error("전송 API 호출 에러:", error);
+        alert(`[전송 실패] 서버에 기록을 저장하지 못했습니다: ${error.message}`);
+        return false;
+    }
+};
+
+function MessageCreatePage() { // 컴포넌트 이름 변경 반영
+    const navigate = useNavigate(); // navigate 훅 사용
+
     const [formFilters, setFormFilters] = useState({
         event: "수능 끝! Y틴 데이터 2배",
         purpose: "혜택 알림",
@@ -156,12 +183,47 @@ function Generator() {
     const toggleEditing = id => {
         setEditing(prev => ({ ...prev, [id]: !prev[id] }));
     };
-    const handleSendMessage = id => {
-        alert(`메시지 전송: ${recipients.find(r => r.id === id)?.name}\n\n${messages[id]}`);
+    
+    // ⭐ [수정된 함수] 전송 이력 저장 API 호출
+    const handleSendMessage = async (id) => {
+        const recipient = recipients.find(r => r.id === id);
+        const messageContent = messages[id];
+        
+        if (!recipient || !messageContent) return;
+
+        const payload = {
+            customerId: recipient.id,
+            customerName: recipient.name,
+            messageContent: messageContent,
+            channel: formFilters.channel,
+            event: formFilters.event,
+            purpose: formFilters.purpose,
+        };
+        
+        const success = await sendToServer(payload);
+
+        if (success) {
+            alert(`${recipient.name}님에게 (${formFilters.channel}) 메시지 전송 및 기록 저장 완료!`);
+            // 전송 후 선택 해제
+            setSelectedIds(ids => ids.filter(i => i !== id));
+            
+            // History 페이지로 자동 이동
+            navigate('/history'); 
+        }
     };
-    const handleSendAll = () => {
-        selectedIds.forEach(id => handleSendMessage(id));
+    
+    //  전체 전송 로직 (병렬 처리)
+    const handleSendAll = async () => {
+        if (selectedIds.length === 0) {
+            alert("전송할 고객을 선택해주세요.");
+            return;
+        }
+        
+        // Promise.all을 사용하여 모든 메시지를 병렬로 전송 및 기록 저장
+        const sendPromises = selectedIds.map(id => handleSendMessage(id));
+        await Promise.all(sendPromises);
     };
+    
     const handleMessageChange = (id, newMsg) => {
         setMessages(msgs => ({ ...msgs, [id]: newMsg }));
     };
@@ -326,4 +388,4 @@ function Generator() {
     );
 }
 
-export default Generator;
+export default MessageCreatePage;

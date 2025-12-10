@@ -44,9 +44,8 @@ public class UserController {
         // 세션 저장
         session.setAttribute("LOGIN_USER", response);
 
-        // SecurityContext에 권한 세팅 (Role 접두사 포함)
         List<GrantedAuthority> authorities = List.of(
-            new SimpleGrantedAuthority("ROLE_" + response.getRole())  // ex: ROLE_admin
+            new SimpleGrantedAuthority(response.getRole())
         );
 
         Authentication auth = new UsernamePasswordAuthenticationToken(

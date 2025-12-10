@@ -1,0 +1,75 @@
+.history-container {
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    max-width: 1400px;
+    margin: 30px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.history-container h1 {
+    font-size: 1.8em;
+    color: #374151;
+    border-bottom: 2px solid #ef4444; /* 레드 강조 */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.history-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.history-table th, 
+.history-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.history-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.history-table tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+.content-cell {
+    max-width: 350px; /* 내용 셀 너비 제한 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 말줄임표 */
+}
+
+.channel-tag {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.85em;
+}
+
+.channel-tag.sms {
+    background-color: #ffe4e6; /* 연한 빨강 */
+    color: #ef4444;
+}
+
+.channel-tag.알림톡 {
+    background-color: #e0f2fe; /* 연한 파랑 */
+    color: #0369a1;
+}
+
+.no-history {
+    text-align: center;
+    padding: 50px 0;
+    color: #9ca3af;
+}
