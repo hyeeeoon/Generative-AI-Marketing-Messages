@@ -22,7 +22,8 @@ import javax.sql.DataSource;
     basePackages = {
         "com.project.backend.domain.user.repository",
         "com.project.backend.domain.notice.repository",
-        "com.project.backend.domain.history.repository"
+        "com.project.backend.domain.history.repository",
+        "com.project.backend.domain.customers"
     },
     entityManagerFactoryRef = "userEntityManager",
     transactionManagerRef = "userTransactionManager"
@@ -54,7 +55,8 @@ public class UserDbConfig {
                 .packages(
                     "com.project.backend.domain.user.entity",
                     "com.project.backend.domain.notice.entity",
-                    "com.project.backend.domain.history.entity"
+                    "com.project.backend.domain.history.entity",
+                    "com.project.backend.domain.customers"
                 )
                 .persistenceUnit("user")
                 .build();
