@@ -6,7 +6,7 @@ import "./MessageCreatePage.css";
 // 임시 API 함수: 데이터 가져오기 (기존 코드 유지)
 async function fetchRecipients(userFilters, showRiskOnly) {
     try {
-        const res = await fetch("http://localhost:5001/api/target-customers-full");
+        const res = await fetch("http://localhost:8080/api/target-customers-full");
         if (!res.ok) throw new Error("Failed to fetch customer data");
 
         const response = await res.json();
