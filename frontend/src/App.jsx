@@ -84,7 +84,7 @@ function App() {
           <Route path="history" element={<History />} />
           <Route path="notice_board" element={<NoticeBoard />} /> {/* 공통 경로 (라벨만 다름) */}
           
-          {/* 성과 분석 관련 (역할별 분리) */}
+          {/* 성과 분석 관련 */}
           <Route path="my_performance" element={<Performance />} />      {/* 일반 사용자: 나의 성과 */}
           <Route path="team_performance" element={<TeamPerformance />} /> {/* 관리자: 팀 성과 분석 */}
 
