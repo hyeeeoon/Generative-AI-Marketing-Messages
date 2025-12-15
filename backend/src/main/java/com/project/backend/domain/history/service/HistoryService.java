@@ -20,7 +20,7 @@ public class HistoryService {
 
     private final HistoryRepository historyRepository;
 
-    // [POST] 메시지 전송 및 이력 저장
+    // [POST] 메시지 전송 및 이력 저장 (로그인 필수)
     @Transactional
     public HistoryResponse record(HistorySendRequest request, UserInfoDto.Response sender) {
         
@@ -39,18 +39,32 @@ public class HistoryService {
         return convertToResponse(savedHistory);
     }
 
-    // [GET] 전송 이력 전체 조회 (Sender ID 기준)
-    
+    // [GET] 전송 이력 조회 (RBAC 로직 적용: portal_admin은 전체 조회)
     public List<HistoryResponse> getFilteredHistory(UserInfoDto.Response currentUser) {
         
-        List<History> historyList = historyRepository.findBySenderIdOrderBySentAtDesc(currentUser.getId().toString());
+        List<History> historyList;
+        
+        // App.jsx에서 /tracker를 인증 필수 경로로 옮기지 않았다면 이 코드는 유효합니다.
+        if (currentUser == null) {
+            // 비인증 사용자에게는 빈 목록 반환 또는 전체 공개 데이터 반환 (현재는 빈 목록 반환)
+             return List.of(); 
+        } 
+        
+        // RBAC: portal_admin은 전체 조회, 나머지는 자기 것만 조회
+        boolean isPortalAdmin = "portal_admin".equalsIgnoreCase(currentUser.getRole());
+
+        if (isPortalAdmin) {
+            historyList = historyRepository.findAll();
+        } else {
+            historyList = historyRepository.findBySenderIdOrderBySentAtDesc(currentUser.getId().toString());
+        }
         
         return historyList.stream()
             .map(this::convertToResponse)
             .collect(Collectors.toList());
     }
     
-    // [PUT] 특정 이력의 클릭 또는 전환 상태를 수동으로 업데이트합니다.
+    // [PUT] 특정 이력의 클릭 또는 전환 상태를 수동으로 업데이트합니다. (RBAC 로직 적용)
     @Transactional
     public HistoryResponse updateStatus(
             Long historyId, 
@@ -65,30 +79,23 @@ public class HistoryService {
 
         History history = historyOptional.get();
 
-        // 1. 권한 검증: 이력의 Sender와 현재 사용자가 일치하는지 확인
-        if (!history.getSenderId().equals(currentUser.getId().toString())) {
+        // 1. RBAC 검증: portal_admin은 모든 이력 수정 가능하도록 예외 처리
+        boolean isPortalAdmin = "portal_admin".equalsIgnoreCase(currentUser.getRole());
+
+        if (!isPortalAdmin && !history.getSenderId().equals(currentUser.getId().toString())) {
             return null; // 권한 없음
         }
 
-        // 2. 상태 타입 검증 및 엔티티 업데이트
+        // 2. 상태 타입 검증 및 엔티티 업데이트 (로직 간소화)
         String statusType = request.getStatusType();
         boolean value = request.isValue();
-
-        if ("CLICKED".equalsIgnoreCase(statusType)) {
-            history.updateStatus("isClicked", value);
-        } else if ("CONVERTED".equalsIgnoreCase(statusType)) {
-            history.updateStatus("isConverted", value);
-        } else {
-            throw new IllegalArgumentException("지원하지 않는 상태 타입입니다: " + statusType);
-        }
-
+        // History 엔티티의 updateStatus 메서드가 로직을 처리하도록 위임합니다.
+        history.updateStatus(statusType, value); 
+        
         // 3. 업데이트된 DTO 반환
         return convertToResponse(history);
     }
 
-    /**
-     * Entity를 Response DTO로 변환
-     */
     private HistoryResponse convertToResponse(History history) {
         return HistoryResponse.builder()
             .id(history.getId())
