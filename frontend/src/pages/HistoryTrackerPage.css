@@ -1,0 +1,154 @@
+/* src/pages/HistoryTrackerPage.css */
+
+/* --- 전역 컨테이너 및 헤더 스타일 --- */
+.history-container {
+    padding: 3rem;
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f9;
+}
+
+.history-header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.history-header p {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* --- 상태 메시지 --- */
+.status-messages {
+    margin-bottom: 1.5rem;
+}
+
+.loading-message {
+    color: #3498db;
+    font-style: italic;
+}
+
+.error-box {
+    background-color: #ffeaea; /* 연한 빨강 */
+    color: #e74c3c; /* 포인트 빨강 */
+    padding: 1rem;
+    border: 1px solid #e74c3c;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* --- 테이블 섹션 --- */
+.history-table-section h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-table th, .history-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.history-table thead th {
+    background-color: #f8f8f8;
+    color: #333;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid #ddd;
+}
+
+.history-table tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+.content-truncate {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-data {
+    text-align: center;
+    padding: 3rem;
+    color: #999;
+}
+
+/* --- 상태 버튼 스타일 (포인트: 빨강) --- */
+.status-cell {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.status-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    min-width: 100px;
+}
+
+.status-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* 클릭 상태 ON (포인트 빨강) */
+.status-clicked-on {
+    background-color: #e74c3c; /* 빨강 */
+}
+
+.status-clicked-on:hover:not(:disabled) {
+    background-color: #c0392b; /* 더 진한 빨강 */
+    transform: translateY(-1px);
+}
+
+/* 클릭 상태 OFF */
+.status-clicked-off {
+    background-color: #95a5a6; /* 회색 */
+}
+
+.status-clicked-off:hover:not(:disabled) {
+    background-color: #7f8c8d;
+    transform: translateY(-1px);
+}
+
+/* 전환 상태 ON (포인트 빨강 - 강조) */
+.status-converted-on {
+    background-color: #e67e22; /* 주황-빨강 계열로 약간 구분 */
+}
+
+.status-converted-on:hover:not(:disabled) {
+    background-color: #d35400;
+    transform: translateY(-1px);
+}
+
+/* 전환 상태 OFF */
+.status-converted-off {
+    background-color: #7f8c8d; /* 회색 */
+}
+
+.status-converted-off:hover:not(:disabled) {
+    background-color: #6c7a89;
+    transform: translateY(-1px);
+}

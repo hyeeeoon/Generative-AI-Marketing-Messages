@@ -19,7 +19,7 @@ public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
 
-    // Node.js: ✅ 1. 테이블 구조 확인 API (Spring Boot에서는 JPA Entity 구조로 대체)
+    // 테이블 구조 확인 API 
     @GetMapping("/check-table")
     public ResponseEntity<Map<String, Object>> checkTable() {
         Map<String, Object> response = new HashMap<>();
@@ -31,7 +31,7 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
 
-    // Node.js: ✅ 2. 실제 데이터 확인 (months_left = 1)
+    // 실제 데이터 확인 (months_left = 1)
     @GetMapping("/target-customers")
     public ResponseEntity<Map<String, Object>> getTargetCustomers() {
         List<Map<String, Object>> result = customerRepository.findTargetCustomersMonthsLeft();
@@ -42,7 +42,7 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
 
-    // Node.js: ✅ 3. 실제 데이터 + months_left 계산 (빈 경우)
+    // 실제 데이터 + months_left 계산 (빈 경우)
     @GetMapping("/target-customers-full")
     public ResponseEntity<Map<String, Object>> getTargetCustomersFull() {
         List<Map<String, Object>> result = customerRepository.findTargetCustomersFullCalculated();
@@ -53,7 +53,7 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
 
-    // Node.js: ✅ 4. 전체 고객 수 확인
+    // 전체 고객 수 확인
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Object>> getStats() {
         long total = customerRepository.countAllCustomers();

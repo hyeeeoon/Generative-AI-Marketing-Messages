@@ -22,4 +22,8 @@ public class HistoryResponse {
     private LocalDateTime sentAt;
     
     private String senderId;
+
+    // 클릭 및 전환 상태
+    private boolean isClicked;
+    private boolean isConverted;
 }
