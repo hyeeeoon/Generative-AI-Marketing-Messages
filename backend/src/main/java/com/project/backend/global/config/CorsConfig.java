@@ -16,12 +16,14 @@ public class CorsConfig {
         
         config.setAllowCredentials(true);
         
-        // 1. 기존 로컬 주소 유지 (개발용)
+        // 1. 로컬 환경 허용
         config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedOrigin("http://localhost:3000");
         
-        // 2. 실제 배포된 Vercel 주소 추가 (필수)
-        config.addAllowedOrigin("https://generative-ai-marketing-messages.vercel.app"); 
+        // 2. Vercel 실서버 및 모든 Preview 주소 허용 (패턴 사용)
+        // 만약 특정 주소만 허용하고 싶다면 아래 주소를 추가하세요.
+        config.addAllowedOrigin("https://generative-ai-marketing-messages.vercel.app");
+        config.addAllowedOrigin("https://generative-ai-marketing-mess-git-578fd2-nagis-projects-9720831c.vercel.app");
         
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
