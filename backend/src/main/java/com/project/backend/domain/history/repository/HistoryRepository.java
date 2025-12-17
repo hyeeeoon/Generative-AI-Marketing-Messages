@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface HistoryRepository extends JpaRepository<History, Long> {
     List<History> findBySenderIdOrderBySentAtDesc(String senderId);
+
+    List<History> findBySenderId(String senderId);
 }

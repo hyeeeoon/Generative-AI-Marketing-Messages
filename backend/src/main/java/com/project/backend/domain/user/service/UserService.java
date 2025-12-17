@@ -8,7 +8,14 @@ import com.project.backend.domain.user.exception.UserExistsException;
 import com.project.backend.domain.user.exception.UserNotFoundException;
 import com.project.backend.domain.user.repository.UserInfoRepository; 
 import lombok.RequiredArgsConstructor;
+import java.util.Collections;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +23,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserInfo user = userInfoRepository.findByUserId(username)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
+        
+        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
+        
+        return new org.springframework.security.core.userdetails.User(
+                user.getUserId(), 
+                user.getPassword(),
+                Collections.singletonList(authority)
+        );
+    }
 
     @Transactional
     public UserInfoDto.Response signup(SignupRequestDto request) {
@@ -44,7 +65,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 권한 확인
+        // 권한 확인 (세션 로그인 시 사용)
         if (request.getRole() != null && !request.getRole().isBlank()) {
             if (!request.getRole().equals(user.getRole())) {
                 throw new IllegalArgumentException("선택한 권한으로는 로그인할 수 없습니다.");

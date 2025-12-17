@@ -267,3 +267,5 @@ gradle-app.setting
 application.yml
 
 application-local.yml
+
+.env

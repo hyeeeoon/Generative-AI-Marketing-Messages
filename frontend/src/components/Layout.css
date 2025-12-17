@@ -39,3 +39,52 @@
     overflow-y: auto;
     padding: 20px;
 }
+
+/* AI 비서 컨테이너: 화면에 고정 */
+.ai-secretary-container {
+    position: fixed; /* 화면에 고정 */
+    bottom: 20px;    /* 아래쪽에서 20px */
+    right: 20px;     /* 오른쪽에서 20px */
+    z-index: 1000;   /* 다른 요소들 위에 표시 */
+}
+
+.ai-secretary-container img{
+    filter: invert(100%) brightness(1.8);
+}
+
+/* 챗봇 아이콘 스타일: 빨간 동그라미 로봇 모양 */
+.chatbot-icon {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%; /* 동그라미 */
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s; /* 클릭 효과를 위한 트랜지션 */
+    margin-right: 10px;
+}
+
+.chatbot-icon:hover {
+    transform: scale(1.05);
+}
+
+/* 챗봇 창 스타일: 작은 창 */
+.chatbot-window {
+    position: absolute;
+    margin-right: 10px;
+    bottom: 80px; /* 아이콘 위쪽에 위치 */
+    right: 0;
+    width: 350px; /* 원하는 크기로 설정 */
+    height: 500px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    overflow: hidden; /* 내부 내용이 창을 벗어나지 않게 */
+    display: flex;
+    flex-direction: column;
+}

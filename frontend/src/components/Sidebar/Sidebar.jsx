@@ -98,15 +98,6 @@ function Sidebar({ user, onLogout, setCurrentLabel }) {
                 isActive={currentPath === 'team_performance'}
                 onClick={goTo('team_performance', '팀 성과 분석')}
             />
-
-            <div className={styles.menuSection}>MANAGEMENT</div>
-            <MenuItem
-                id="manager_dashboard"
-                icon="chart-pie"
-                label="비용/효율 관리"
-                isActive={currentPath === 'manager_dashboard'}
-                onClick={goTo('manager_dashboard', '비용/효율 관리')}
-            />
         </>
     );
 
@@ -123,11 +114,11 @@ function Sidebar({ user, onLogout, setCurrentLabel }) {
             />
             {/* 공지사항 메뉴는 아래 통합 섹션으로 이동 */}
             <MenuItem
-                id="admin_settings"
+                id="tracker"
                 icon="gears"
                 label="시스템 설정"
-                isActive={currentPath === 'admin_settings'}
-                onClick={goTo('admin_settings', '시스템 설정')}
+                isActive={currentPath === 'tracker'}
+                onClick={goTo('tracker', '시스템 설정')}
             />
         </>
     );
