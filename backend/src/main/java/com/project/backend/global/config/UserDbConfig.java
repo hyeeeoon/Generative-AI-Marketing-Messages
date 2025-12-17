@@ -41,8 +41,16 @@ public class UserDbConfig {
     @Primary
     @Bean(name = "userDataSource")
     public DataSource userDataSource() {
+        // Render의 환경 변수에서 주소, 아이디, 비번을 직접 가져옵니다.
+        String dbUrl = System.getenv("SPRING_DATASOURCE_URL");
+        String dbUser = System.getenv("DB_USER");
+        String dbPass = System.getenv("DB_PASSWORD");
+
         return userDataSourceProperties()
                 .initializeDataSourceBuilder()
+                .url(dbUrl)      // 환경 변수 주소 강제 주입
+                .username(dbUser) // 환경 변수 아이디 강제 주입
+                .password(dbPass) // 환경 변수 비번 강제 주입
                 .build();
     }
 
