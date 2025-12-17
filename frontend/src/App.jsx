@@ -23,7 +23,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/users/me", {
+    fetch("${import.meta.env.VITE_API_BASE_URL}/api/users/me", {
       method: "GET",
       credentials: "include",
     })

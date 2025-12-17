@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './HistoryTrackerPage.css';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = '${import.meta.env.VITE_API_BASE_URL}/api';
 
 function HistoryTrackerPage() {
     const [histories, setHistories] = useState([]);

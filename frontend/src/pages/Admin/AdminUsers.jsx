@@ -37,7 +37,7 @@ function AdminUsers() {
             setLoading(true);
             setError(null);
             try {
-                const response = await fetch("http://localhost:8080/api/users", {
+                const response = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/users", {
                     method: "GET",
                     credentials: "include", 
                     headers: {

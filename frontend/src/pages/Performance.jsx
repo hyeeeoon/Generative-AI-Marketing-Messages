@@ -7,7 +7,7 @@ import {
 } from 'recharts'; 
 import './Performance.css';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = '${import.meta.env.VITE_API_BASE_URL}/api';
 
 /**
  * ChartComponent: 기간별 추이 데이터를 LineChart로 시각화합니다.

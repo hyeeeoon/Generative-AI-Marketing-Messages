@@ -24,7 +24,7 @@ export default function NoticeBoard({ previewOnly, recentCount = 3, showDate = t
     // 세션에서 role 가져오기 (안전하게)
     const fetchUserRole = async () => {
         try {
-            const res = await fetch("http://localhost:8080/api/users/me", {
+            const res = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/users/me", {
                 method: "GET",
                 credentials: "include"
             });
@@ -51,7 +51,7 @@ export default function NoticeBoard({ previewOnly, recentCount = 3, showDate = t
     // 공지사항 불러오기
     const fetchNotices = async () => {
         try {
-            const res = await fetch("http://localhost:8080/api/notices", {
+            const res = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/notices", {
                 method: "GET",
                 credentials: "include"
             });
@@ -82,8 +82,8 @@ export default function NoticeBoard({ previewOnly, recentCount = 3, showDate = t
         e.preventDefault();
 
         const url = editingId
-            ? `http://localhost:8080/api/notices/${editingId}`
-            : "http://localhost:8080/api/notices";
+            ? `${import.meta.env.VITE_API_BASE_URL}/api/notices/${editingId}`
+            : "${import.meta.env.VITE_API_BASE_URL}/api/notices";
         const method = editingId ? "PUT" : "POST";
 
         try {
@@ -121,7 +121,7 @@ export default function NoticeBoard({ previewOnly, recentCount = 3, showDate = t
         if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
         try {
-            const response = await fetch(`http://localhost:8080/api/notices/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/notices/${id}`, {
                 method: "DELETE",
                 credentials: "include",
             });
