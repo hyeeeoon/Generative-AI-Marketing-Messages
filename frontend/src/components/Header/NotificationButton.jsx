@@ -1,7 +1,5 @@
 // components/header/NotificationButton.js
 import React from 'react';
-import './NotificationButton.css';
-
 const NotificationButton = ({ unreadCount, onClick, hasUnread }) => {
     return (
         <button className="notification-button" onClick={onClick}>

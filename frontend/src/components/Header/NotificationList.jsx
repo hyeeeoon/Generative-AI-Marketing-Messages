@@ -1,7 +1,5 @@
 // components/header/NotificationList.js
 import React from 'react';
-import './NotificationList.css';
-
 const NotificationList = ({ notifications, unreadCount }) => {
     return (
         <div className="notification-list">
