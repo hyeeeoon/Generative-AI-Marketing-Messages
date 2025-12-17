@@ -38,7 +38,7 @@ public class SecurityConfig {
         http
             // ----------------- CSRF 비활성화 & CORS 설정 -----------------
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> {}) 
+            .cors(org.springframework.security.config.Customizer.withDefaults())
             
             // 1. 인증 제공자 설정 적용
             .authenticationProvider(authenticationProvider) 
@@ -48,6 +48,7 @@ public class SecurityConfig {
                 
                 // ===== 1. PUBLIC 경로 (로그인 없이 접근 가능) =====
                 // 로그인, 회원가입 관련 기본 경로
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/users/login").permitAll()
                 .requestMatchers("/api/users/signup").permitAll()
                 .requestMatchers("/api/users/me").permitAll() 
