@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "./NoticeBoard.css";
 
-export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
+export default function NoticeBoard({ previewOnly, recentCount = 3, showDate = true }) {
     const [notices, setNotices] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [editingId, setEditingId] = useState(null);
@@ -58,6 +58,7 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
     
             if (res.ok) {
                 const result = await res.json();
+                // API 응답의 필드 이름에 맞춰서 정렬 로직 수정: 'important' 필드를 사용
                 const sorted = result.sort((a, b) => {
                     if (a.important !== b.important) {
                         return a.important ? -1 : 1; // 필독 먼저
@@ -139,21 +140,35 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
         }
     };
 
-    // 미리보기 모드
+    // 미리보기 모드 (HomePage.css와 호환되도록 수정)
     if (previewOnly) {
         return (
-            <div className="notice-preview">
+            <ul className="notice-preview-list"> 
                 {notices.length === 0 ? (
-                    <div className="notice-empty">등록된 공지사항이 없습니다.</div>
+                    <li className="notice-preview-empty">등록된 공지사항이 없습니다.</li>
                 ) : (
                     notices.map((n) => (
-                        <div key={n.id} className={`notice-preview-item ${n.isImportant ? 'important' : ''}`}>
-                            <span className="notice-prefix">{n.isImportant ? '[필독]' : '·'}</span>
-                            <span className="notice-text">{n.title}</span>
-                        </div>
+                        <li 
+                            key={n.id} 
+                            // API 필드 이름 'important' 사용
+                            className={`notice-preview-row ${n.important ? 'important' : ''}`} 
+                        >
+                            <div className="notice-preview-title">
+                                {/* 필독 태그 (CSS 클래스: important-tag) */}
+                                {n.important && <span className="important-tag">필독</span>}
+                                {n.title}
+                            </div>
+                            {/* 날짜 표시 (CSS 클래스: notice-preview-date) */}
+                            {showDate && (
+                                <span className="notice-preview-date">
+                                    {/* 날짜 형식: YYYY. MM. DD. 에서 마침표 제거 */}
+                                    {new Date(n.createdAt).toLocaleDateString("ko-KR").slice(0, -1)} 
+                                </span>
+                            )}
+                        </li>
                     ))
                 )}
-            </div>
+            </ul>
         );
     }
 
@@ -208,7 +223,7 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                                 <button type="button" className="cancel-btn" onClick={() => {
                                     setShowForm(false);
                                     setEditingId(null);
-                                    setForm({ title: "", content: "", isImportant: false, author: "관리자" });
+                                    setForm({ title: "", content: "", isImportant: false, author: username }); // author를 username으로 초기화
                                 }}>
                                     취소
                                 </button>
@@ -223,9 +238,10 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                     <div className="notice-empty-full">아직 등록된 공지사항이 없습니다.</div>
                 ) : (
                     notices.map((n) => (
-                        <div key={n.id} className={`notice-item ${n.isImportant ? 'important-notice' : ''}`}>
+                        // n.important를 사용하도록 수정
+                        <div key={n.id} className={`notice-item ${n.important ? 'important-notice' : ''}`}>
                             <div className="notice-content">
-                                {n.isImportant && <div className="important-badge">필독</div>}
+                                {n.important && <div className="important-badge">필독</div>}
                                 <h3 className="notice-title">{n.title}</h3>
                                 <div className="notice-meta">
                                     작성자: {n.author} | 
@@ -243,7 +259,8 @@ export default function NoticeBoard({ previewOnly, recentCount = 3 }) {
                                         setForm({ 
                                             title: n.title, 
                                             content: n.content, 
-                                            isImportant: n.isImportant || false,
+                                            // API 필드 이름 'important' 사용
+                                            isImportant: n.important || false, 
                                             author: n.author || "관리자"
                                         });
                                         setShowForm(true);

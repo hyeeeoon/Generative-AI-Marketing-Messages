@@ -63,6 +63,7 @@ src/                                   # 리액트 소스 코드 루트
 │   │ 
 │   ├── HomePage.jsx                   # 메인 페이지
 │   ├── HomePage.css                   
+│   ├── HistoryTrackerPage.jsx         # 클릭률 가입률 수동 전환 페이지 
 │   ├── History.jsx                    # 전송 이력
 │   ├── Manager.jsx                    # 비용/효율관리
 │   ├── NoticeBoard.css                 
