@@ -1,11 +1,3 @@
-package com.project.backend.global.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
 @Configuration
 public class CorsConfig {
 
@@ -14,13 +6,19 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         
-        config.setAllowCredentials(true);                    // 쿠키 허용
-        config.addAllowedOrigin("http://localhost:5173");   // 프론트 포트 정확히
-        config.addAllowedOrigin("http://localhost:3000");   // 혹시 몰라서 추가
-        config.addAllowedHeader("*");                       // 모든 헤더 허용
-        config.addAllowedMethod("*");                       // GET, POST, PUT, DELETE 등 전부 허용
+        config.setAllowCredentials(true);
         
-        source.registerCorsConfiguration("/**", config); // 모든 경로에 CORS 적용
+        // 1. 기존 로컬 주소 유지 (개발용)
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("http://localhost:3000");
+        
+        // 2. 실제 배포된 Vercel 주소 추가 (필수)
+        config.addAllowedOrigin("https://generative-ai-marketing-messages.vercel.app"); 
+        
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        
+        source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 }
