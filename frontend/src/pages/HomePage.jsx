@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import NoticeBoard from './NoticeBoard'; 
 import './HomePage.css';
 
-const API_BASE_URL = '${import.meta.env.VITE_API_BASE_URL}/api'; 
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api`; 
 
 import image1 from '../assets/수능.png';
 import image2 from '../assets/신년.png';

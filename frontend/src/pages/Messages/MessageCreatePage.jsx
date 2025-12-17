@@ -6,7 +6,7 @@ import "./MessageCreatePage.css";
 // 임시 API 함수: 데이터 가져오기 (기존 코드 유지)
 async function fetchRecipients(userFilters, showRiskOnly) {
     try {
-        const res = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/target-customers-full");
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/target-customers-full`);
         if (!res.ok) throw new Error("Failed to fetch customer data");
 
         const response = await res.json();
@@ -73,7 +73,7 @@ async function fetchRecipients(userFilters, showRiskOnly) {
 //전송 이력 서버 저장 API 호출
 const sendToServer = async (payload) => {
     try {
-        const res = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/history/send", {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/history/send`, {
             method: 'POST',
             credentials: 'include',
             headers: {
