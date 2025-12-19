@@ -58,17 +58,18 @@ public class SecurityConfig {
                 .requestMatchers("/api/users/me").permitAll() 
                 .requestMatchers("/api/users").permitAll()
                 
-                // 공지사항 조회 (GET)는 모두에게 공개
-                .requestMatchers(HttpMethod.GET, "/api/notices/**").permitAll() 
-                
                 // Controller에서 자체적으로 검증하는 경로들
                 .requestMatchers("/api/performance/**").permitAll() 
                 .requestMatchers("/api/target-customers-full").permitAll() 
                 .requestMatchers("/api/history/**").permitAll()
 
-                // ===== 2. ADMIN/특정 권한 필수 경로 =====
+                // 공지사항
+                .requestMatchers(HttpMethod.GET, "/api/notices/**").permitAll() // 공지사항 조회 (GET)는 모두에게 공개
+                .requestMatchers(HttpMethod.POST, "/api/notices/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/notices/**").hasAnyAuthority("admin", "portal_admin")
                 .requestMatchers(HttpMethod.DELETE, "/api/notices/**").hasAnyAuthority("admin", "portal_admin")
+
+
                 
                 // ===== 3. 그 외 모든 요청 =====
                 .anyRequest().authenticated() 

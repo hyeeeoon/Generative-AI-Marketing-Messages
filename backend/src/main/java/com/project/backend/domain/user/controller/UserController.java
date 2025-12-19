@@ -48,6 +48,9 @@ public class UserController {
             new SimpleGrantedAuthority(response.getRole())
         );
 
+        System.out.println("로그인 유저 ROLE 값 = " + response.getRole());
+        System.out.println("Spring Security Authorities = " + authorities);
+
         Authentication auth = new UsernamePasswordAuthenticationToken(
             response.getUserId(), null, authorities
         );
