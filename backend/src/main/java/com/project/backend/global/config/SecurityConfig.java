@@ -65,9 +65,14 @@ public class SecurityConfig {
 
                 // 공지사항
                 .requestMatchers(HttpMethod.GET, "/api/notices/**").permitAll() // 공지사항 조회 (GET)는 모두에게 공개
-                .requestMatchers(HttpMethod.POST, "/api/notices/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/api/notices/**").hasAnyAuthority("admin", "portal_admin")
-                .requestMatchers(HttpMethod.DELETE, "/api/notices/**").hasAnyAuthority("admin", "portal_admin")
+                // 공지사항
+                .requestMatchers(HttpMethod.POST, "/api/notices/**")
+                    .hasAnyAuthority("admin", "portal_admin")
+                .requestMatchers(HttpMethod.PUT, "/api/notices/**")
+                    .hasAnyAuthority("admin", "portal_admin")
+                .requestMatchers(HttpMethod.DELETE, "/api/notices/**")
+                    .hasAnyAuthority("admin", "portal_admin")
+
 
 
                 
