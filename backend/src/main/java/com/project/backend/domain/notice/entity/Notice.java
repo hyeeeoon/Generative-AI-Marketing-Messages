@@ -33,7 +33,15 @@ public class Notice {
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
 
-    // 논리적 삭제를 위한 soft delete (선택 사항, 나중에 필요하면)
-    // @Column(name = "deleted_at")
-    // private LocalDateTime deletedAt;
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
 }

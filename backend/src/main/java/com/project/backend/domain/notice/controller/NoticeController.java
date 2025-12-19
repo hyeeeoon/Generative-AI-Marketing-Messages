@@ -11,7 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/notices")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://generative-ai-marketing-messages.vercel.app"
+})
 public class NoticeController {
 
     private final NoticeService noticeService;
